@@ -15,6 +15,8 @@ mongoose
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+app.use("/api/item", require("./routes/item-route"));
+
 app.listen(8080, () => {
   console.log("Server is running on port 8080");
 });
