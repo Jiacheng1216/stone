@@ -63,7 +63,7 @@ const HomeComponent = () => {
                     >
                       <p className="stone-count">現貨片數: {stoneCount}</p>
                       <img
-                        src={`http://localhost:8080/images/${latestStone.imagePath}`}
+                        src={`http://192.168.0.96:8080/images/${latestStone.imagePath}`}
                         alt={`${color} marble`}
                         className="latest-stone-image"
                       />

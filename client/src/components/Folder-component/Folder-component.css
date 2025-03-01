@@ -13,3 +13,108 @@
   background-color: rgb(170, 173, 173);
   height: 48px;
 }
+
+.folder-stone-container {
+  display: flex;
+  flex-wrap: wrap; /* 允許換行 */
+  gap: 50px;
+  padding: 20px;
+  justify-content: center;
+  max-width: 1800px;
+  margin: 0 auto;
+}
+
+.stone-background {
+  width: 240px; /* 固定大小，所有圖片區塊一致 */
+  height: 200px;
+  background-color: #ddd; /* 灰色背景 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  border-radius: 8px;
+  overflow: hidden; /* 防止內容溢出 */
+  flex: 0 0 240px; /* 確保不縮小或變形 */
+}
+
+.stone-img {
+  width: 200px;
+  height: 180px;
+  max-width: 80%; /* 讓圖片比背景小 */
+  max-height: 80%;
+  object-fit: contain;
+}
+
+.stone-color {
+  font-size: 18px;
+}
+
+/* === Modal 彈出視窗 === */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  position: relative;
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.modal-img {
+  max-width: 80vw;
+  max-height: 80vh;
+}
+
+/* 按鈕樣式 */
+.close-btn,
+.prev-btn,
+.next-btn {
+  position: absolute;
+  background: rgba(255, 255, 255, 0.6);
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  font-size: 20px;
+}
+
+.close-btn {
+  top: 10px;
+  right: 10px;
+}
+
+.prev-btn {
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.next-btn {
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.download-img-text-div {
+  display: flex;
+  justify-content: center;
+  align-self: center;
+  margin-bottom: 10px;
+}
+
+.modal-color {
+  font-size: 30px;
+}
+
+.download-img-text {
+  font-size: 20px;
+}
