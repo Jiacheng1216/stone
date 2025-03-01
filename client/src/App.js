@@ -1,7 +1,9 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import HomeComponent from "./components/homeComponents/home-components";
-import FolderComponent from "./components/folder-components";
+import FolderComponent from "./components/Folder-component/Folder-component";
 import Layout from "./components/Layout";
+import itemService from "./services/item.service";
+import { useState } from "react";
 
 function App() {
   return (
@@ -9,7 +11,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<HomeComponent />} />
-          <Route path="folder" element={<FolderComponent />} />
+          <Route path="/folder/:color" element={<FolderComponent />} />
         </Route>
       </Routes>
     </BrowserRouter>

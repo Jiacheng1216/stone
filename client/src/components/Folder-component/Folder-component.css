@@ -1,0 +1,15 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.folder-header-top {
+  background-color: rgb(135, 139, 140);
+  height: 74px;
+}
+
+.folder-header-bottom {
+  background-color: rgb(170, 173, 173);
+  height: 48px;
+}
