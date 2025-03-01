@@ -29,8 +29,6 @@ const HomeComponent = () => {
     return acc;
   }, {});
 
-  console.log("分類後的資料：", categorizedStones);
-
   return (
     <main>
       <div className="body">
@@ -56,8 +54,6 @@ const HomeComponent = () => {
                   const latestStone = categorizedStones[color].sort(
                     (a, b) => new Date(b.date) - new Date(a.date)
                   )[0];
-
-                  console.log(latestStone.imagePath);
 
                   return (
                     <Link
