@@ -1,5 +1,5 @@
 import axios from "axios";
-const API_URL = "http://localhost:8080/api/item";
+const API_URL = "http://192.168.0.96:8080/api/item";
 
 class ItemService {
   //上傳商品
@@ -46,9 +46,9 @@ class ItemService {
     return axios.delete(API_URL + "/delete/" + id);
   }
 
-  //查詢個別商品
-  getIndividualItem(id) {
-    return axios.get(API_URL + "/findItem/" + id);
+  //查詢單一顏色商品
+  getByColor(color) {
+    return axios.get(API_URL + "/folder/" + color);
   }
 
   //編輯個別商品

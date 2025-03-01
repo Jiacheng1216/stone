@@ -82,10 +82,10 @@ router.get("/showItems", async (req, res) => {
 });
 
 //以商品id來查詢商品
-router.get("/findItem/:id", async (req, res) => {
+router.get(`/folder/:color`, async (req, res) => {
   try {
-    const itemId = req.params.id;
-    const findItem = await itemModels.findById({ _id: itemId });
+    const itemColor = req.params.color;
+    const findItem = await itemModels.find({ color: itemColor });
     res.send(findItem);
   } catch (e) {
     console.log(e);
