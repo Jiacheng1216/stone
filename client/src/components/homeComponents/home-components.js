@@ -3,6 +3,7 @@ import "./home-components.css";
 import itemService from "../../services/item.service";
 import { Link, Navigate } from "react-router-dom";
 import NavbarComponent from "../navbar-component/NavbarComponent";
+import FooterComponent from "../footer-component/FooterComponent";
 
 const HomeComponent = () => {
   const [stones, setStones] = useState([]);
@@ -41,7 +42,12 @@ const HomeComponent = () => {
       <NavbarComponent />
       <div className="main-container">
         <div className="search-section">
-          <h1>大理石分類</h1>
+          <p className="intro-text">
+            精心挑選採購至廠內，供客戶挑選最高品質。
+            <br />
+            上百種的天然大理石、花崗石、洞石及玉石等
+          </p>
+
           <input
             type="text"
             placeholder="搜尋顏色..."
@@ -76,6 +82,7 @@ const HomeComponent = () => {
           })}
         </div>
       </div>
+      <FooterComponent />
     </main>
   );
 };

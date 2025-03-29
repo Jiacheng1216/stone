@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import ItemService from "../../services/item.service";
 import "./Folder-component.css";
+import NavbarComponent from "../navbar-component/NavbarComponent";
+import FooterComponent from "../footer-component/FooterComponent";
 
 const FolderComponent = () => {
   const { color } = useParams(); // 從 URL 取得顏色
@@ -49,10 +51,7 @@ const FolderComponent = () => {
 
   return (
     <div>
-      <div className="folder-header">
-        <div className="folder-header-top"></div>
-        <div className="folder-header-bottom"></div>
-      </div>
+      <NavbarComponent />
       <div className="folder-content">
         <div className="folder-content-download"></div>
         <div className="folder-content-items">
@@ -115,6 +114,7 @@ const FolderComponent = () => {
           </div>
         </div>
       </div>
+      <FooterComponent />
     </div>
   );
 };
