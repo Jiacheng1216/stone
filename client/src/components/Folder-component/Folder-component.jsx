@@ -4,6 +4,7 @@ import ItemService from "../../services/item.service";
 import "./Folder-component.css";
 import NavbarComponent from "../navbar-component/NavbarComponent";
 import FooterComponent from "../footer-component/FooterComponent";
+import { ip } from "../../config";
 
 const FolderComponent = () => {
   const { color } = useParams(); // 從 URL 取得顏色
@@ -65,7 +66,7 @@ const FolderComponent = () => {
                 >
                   <img
                     className="stone-img"
-                    src={`http://192.168.0.96:8080/images/${stone.imagePath}`}
+                    src={`${ip}/images/${stone.imagePath}`}
                     alt={stone.color}
                     width="100"
                   />
@@ -87,7 +88,7 @@ const FolderComponent = () => {
                   <div className="download-img-text-div">
                     <p className="modal-color">{stones[currentIndex].color}</p>
                     <a
-                      href={`http://192.168.0.96:8080/images/${selectedImage}`}
+                      href={`${ip}/images/${selectedImage}`}
                       download
                       className="download-img-text"
                     >
@@ -101,7 +102,7 @@ const FolderComponent = () => {
                     ←
                   </button>
                   <img
-                    src={`http://192.168.0.96:8080/images/${selectedImage}`}
+                    src={`${ip}/images/${selectedImage}`}
                     alt="Enlarged stone"
                     className="modal-img"
                   />

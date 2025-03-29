@@ -15,10 +15,10 @@ const NavbarComponent = () => {
           商穎石材線上展示間
         </Link>
       </div>
-      <div className="navbar-links">
+      {/* <div className="navbar-links">
         <Link to="/">首頁</Link>
         <Link to="/admin">管理</Link>
-      </div>
+      </div> */}
     </nav>
   );
 };

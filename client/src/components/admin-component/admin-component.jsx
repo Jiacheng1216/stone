@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import itemService from "../../services/item.service";
 import "./Admin.css";
 import { useNavigate } from "react-router-dom";
+import { ip } from "../../config";
 
 const AdminComponent = () => {
   const navigate = useNavigate(); // 替代 useHistory
@@ -123,10 +124,7 @@ const AdminComponent = () => {
       <div className="stone-list">
         {stones.map((stone) => (
           <div key={stone._id} className="stone-item">
-            <img
-              src={`http://localhost:8080/images/${stone.imagePath}`}
-              alt={stone.color}
-            />
+            <img src={`${ip}/images/${stone.imagePath}`} alt={stone.color} />
             <p>{stone.color}</p>
             <p>
               {stone.width} × {stone.height}

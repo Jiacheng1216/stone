@@ -4,6 +4,7 @@ import itemService from "../../services/item.service";
 import { Link, Navigate } from "react-router-dom";
 import NavbarComponent from "../navbar-component/NavbarComponent";
 import FooterComponent from "../footer-component/FooterComponent";
+import { ip } from "../../config";
 
 const HomeComponent = () => {
   const [stones, setStones] = useState([]);
@@ -68,7 +69,7 @@ const HomeComponent = () => {
               <Link to={`/folder/${color}`} key={color} className="folder-card">
                 <div className="folder-image-container">
                   <img
-                    src={`http://192.168.0.96:8080/images/${latestStone.imagePath}`}
+                    src={`${ip}/images/${latestStone.imagePath}`}
                     alt={`${color} marble`}
                     className="preview-img"
                   />
