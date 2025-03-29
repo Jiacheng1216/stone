@@ -19,11 +19,21 @@ const storage = multer.diskStorage({
   },
 });
 
-const upload = multer({ storage: storage });
+const fileFilter = (req, file, callback) => {
+  // 解决中文名乱码的问题 latin1 是一种编码格式
+  file.originalname = Buffer.from(file.originalname, "latin1").toString("utf8");
+  callback(null, true);
+};
+
+const upload = multer({ storage: storage, fileFilter: fileFilter });
 
 //上傳圖片的router
 router.post("/postPhoto", upload.single("photo"), async (req, res) => {
   try {
+    if (!req.file) {
+      return res.status(400).send("沒有上傳圖片");
+    }
+
     res.send(req.file);
   } catch (e) {
     return res.send(500).send("無法上傳圖片");
@@ -75,6 +85,7 @@ router.delete("/delete/:id", async (req, res) => {
 router.get("/showItems", async (req, res) => {
   try {
     const allItems = await itemModels.find();
+
     return res.send(allItems);
   } catch (e) {
     res.status(500).send("無法查詢所有商品");
