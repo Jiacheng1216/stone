@@ -13,6 +13,8 @@ const AdminComponent = () => {
     image: null,
   });
   const [previewUrl, setPreviewUrl] = useState(null);
+  //選擇檔案 上傳圖片
+  let [selectedFile, setSelectedFile] = useState(null);
 
   useEffect(() => {
     // 檢查是否已經登入
@@ -41,6 +43,7 @@ const AdminComponent = () => {
     const file = e.target.files[0];
     if (file) {
       setNewStone({ ...newStone, image: file.name });
+      setSelectedFile(file);
       setPreviewUrl(URL.createObjectURL(file));
     }
   };
@@ -49,7 +52,7 @@ const AdminComponent = () => {
     e.preventDefault();
 
     const formData = new FormData();
-    formData.append("photo", newStone.image);
+    formData.append("photo", selectedFile);
 
     try {
       // 第一步：上傳圖片
