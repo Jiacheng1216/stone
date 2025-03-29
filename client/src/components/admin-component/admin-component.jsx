@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
 import itemService from "../../services/item.service";
 import "./Admin.css";
+import { useNavigate } from "react-router-dom";
 
 const AdminComponent = () => {
+  const navigate = useNavigate(); // 替代 useHistory
   const [stones, setStones] = useState([]);
   const [newStone, setNewStone] = useState({
     color: "",
@@ -13,8 +15,13 @@ const AdminComponent = () => {
   const [previewUrl, setPreviewUrl] = useState(null);
 
   useEffect(() => {
-    fetchStones();
-  }, []);
+    // 檢查是否已經登入
+    if (localStorage.getItem("isAdmin") !== "true") {
+      navigate("/login"); // 未登入則跳轉到登入頁
+    } else {
+      fetchStones();
+    }
+  }, [navigate]);
 
   const fetchStones = async () => {
     try {
