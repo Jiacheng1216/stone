@@ -2,96 +2,88 @@ import React, { useEffect, useState } from "react";
 import "./home-components.css";
 import itemService from "../../services/item.service";
 import { Link, Navigate } from "react-router-dom";
+import NavbarComponent from "../navbar-component/NavbarComponent";
+import FooterComponent from "../footer-component/FooterComponent";
+import { ip } from "../../config";
 
 const HomeComponent = () => {
   const [stones, setStones] = useState([]);
+  const [groupedStones, setGroupedStones] = useState({});
+  const [search, setSearch] = useState("");
 
   useEffect(() => {
     fetchItem();
   }, []);
 
-  //查找所有物品
   const fetchItem = async () => {
     try {
       const response = await itemService.get();
       setStones(response.data);
+      groupByColor(response.data);
     } catch (e) {
       console.log(e);
     }
   };
 
-  //照顏色分類
-  const categorizedStones = stones.reduce((acc, stone) => {
-    if (!acc[stone.color]) {
-      acc[stone.color] = [];
-    }
-    acc[stone.color].push(stone);
-    return acc;
-  }, {});
+  const groupByColor = (items) => {
+    const grouped = items.reduce((acc, item) => {
+      if (!acc[item.color]) acc[item.color] = [];
+      acc[item.color].push(item);
+      return acc;
+    }, {});
+    setGroupedStones(grouped);
+  };
 
-  console.log("分類後的資料：", categorizedStones);
+  const filteredGrouped = Object.entries(groupedStones).filter(([color]) =>
+    color.toLowerCase().includes(search.toLowerCase())
+  );
 
   return (
     <main>
-      <div className="body">
-        <div className="header">
-          <div className="content"></div>
+      <NavbarComponent />
+      <div className="main-container">
+        <div className="search-section">
+          <p className="intro-text">
+            精心挑選採購至廠內，供客戶挑選最高品質。
+            <br />
+            上百種的天然大理石、花崗石、洞石及玉石等
+          </p>
+
+          <input
+            type="text"
+            placeholder="搜尋顏色..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="search-input"
+          />
         </div>
 
-        <div className="search">
-          <div className="btn-search">進階搜尋 🔍</div>
-          <div className="input-search">關鍵字搜尋</div>
-        </div>
+        <div className="folder-list">
+          {filteredGrouped.map(([color, stones]) => {
+            const stoneCount = stones.length;
+            const latestStone = stones.sort(
+              (a, b) => new Date(b.date) - new Date(a.date)
+            )[0];
 
-        <div className="content">
-          <div className="btn-color-select"></div>
-          <div className="folder-container">
-            <div>
-              <div className="folder-container">
-                {Object.keys(categorizedStones).map((color) => {
-                  // 取得該顏色的總數量
-                  const stoneCount = categorizedStones[color].length;
-
-                  // 取得最新的一張圖片（根據日期排序）
-                  const latestStone = categorizedStones[color].sort(
-                    (a, b) => new Date(b.date) - new Date(a.date)
-                  )[0];
-
-                  console.log(latestStone.imagePath);
-
-                  return (
-                    <Link
-                      to={`/folder/${color}`}
-                      key={color}
-                      className="folder-item"
-                    >
-                      <p className="stone-count">現貨片數: {stoneCount}</p>
-                      <img
-                        src={`http://localhost:8080/images/${latestStone.imagePath}`}
-                        alt={`${color} marble`}
-                        className="latest-stone-image"
-                      />
-                      <img
-                        src={"images/folder.png"}
-                        alt={`${color} folder`}
-                        className="folder-image"
-                      />
-                      <p>{color}</p>
-                    </Link>
-                  );
-                })}
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="footer">
-          <div className="footer-text">
-            <p>Follow us on:</p>
-          </div>
-          <div className="btn-link-container"></div>
+            return (
+              <Link to={`/folder/${color}`} key={color} className="folder-card">
+                <div className="folder-image-container">
+                  <img
+                    src={`${ip}/images/${latestStone.imagePath}`}
+                    alt={`${color} marble`}
+                    className="preview-img"
+                  />
+                </div>
+                <div className="folder-info">
+                  <p className="folder-color">{color}</p>
+                  <p className="folder-count">現貨片數: {stoneCount}</p>
+                </div>
+              </Link>
+            );
+          })}
         </div>
       </div>
+      <FooterComponent />
     </main>
   );
 };

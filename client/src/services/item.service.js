@@ -1,5 +1,6 @@
 import axios from "axios";
-const API_URL = "http://192.168.0.96:8080/api/item";
+import { ip } from "../config";
+const API_URL = `${ip}/api/item`;
 
 class ItemService {
   //上傳商品

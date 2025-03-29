@@ -2,10 +2,40 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import ItemService from "../../services/item.service";
 import "./Folder-component.css";
+import NavbarComponent from "../navbar-component/NavbarComponent";
+import FooterComponent from "../footer-component/FooterComponent";
+import { ip } from "../../config";
 
 const FolderComponent = () => {
   const { color } = useParams(); // 從 URL 取得顏色
   const [stones, setStones] = useState([]);
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  // 開啟 Modal 並設定當前圖片
+  const openModal = (index) => {
+    setCurrentIndex(index);
+    setSelectedImage(stones[index].imagePath);
+  };
+
+  // 關閉 Modal
+  const closeModal = () => {
+    setSelectedImage(null);
+  };
+
+  // 切換上一張圖片
+  const prevImage = () => {
+    const newIndex = (currentIndex - 1 + stones.length) % stones.length;
+    setCurrentIndex(newIndex);
+    setSelectedImage(stones[newIndex].imagePath);
+  };
+
+  // 切換下一張圖片
+  const nextImage = () => {
+    const newIndex = (currentIndex + 1) % stones.length;
+    setCurrentIndex(newIndex);
+    setSelectedImage(stones[newIndex].imagePath);
+  };
 
   useEffect(() => {
     fetchColorItems();
@@ -22,34 +52,70 @@ const FolderComponent = () => {
 
   return (
     <div>
-      <div className="folder-header">
-        <div className="folder-header-top"></div>
-        <div className="folder-header-bottom"></div>
-      </div>
+      <NavbarComponent />
       <div className="folder-content">
         <div className="folder-content-download"></div>
         <div className="folder-content-items">
-          <h1>{color} 色的大理石</h1>
-          <div className="folder-content">
+          <div className="folder-stone-container">
             {stones.length > 0 ? (
-              stones.map((stone) => (
-                <div key={stone._id} className="stone-item">
+              stones.map((stone, index) => (
+                <div
+                  key={stone._id}
+                  className="stone-background"
+                  onClick={() => openModal(index)}
+                >
                   <img
-                    src={`http://localhost:8080/images/${stone.imagePath}`}
+                    className="stone-img"
+                    src={`${ip}/images/${stone.imagePath}`}
                     alt={stone.color}
                     width="100"
                   />
-                  <p>
-                    寬度: {stone.width} 高度: {stone.height}
-                  </p>
+                  <p className="stone-color">{stone.color}</p>
                 </div>
               ))
             ) : (
               <p>沒有找到 {color} 色的大理石。</p>
             )}
+
+            {/* 彈出視窗 (Modal) */}
+            {selectedImage !== null && (
+              <div className="modal-overlay" onClick={closeModal}>
+                <div
+                  className="modal-content"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  {/* 下載圖片超連結 */}
+                  <div className="download-img-text-div">
+                    <p className="modal-color">{stones[currentIndex].color}</p>
+                    <a
+                      href={`${ip}/images/${selectedImage}`}
+                      download
+                      className="download-img-text"
+                    >
+                      下載圖片
+                    </a>
+                  </div>
+                  <button className="close-btn" onClick={closeModal}>
+                    ✖
+                  </button>
+                  <button className="prev-btn" onClick={prevImage}>
+                    ←
+                  </button>
+                  <img
+                    src={`${ip}/images/${selectedImage}`}
+                    alt="Enlarged stone"
+                    className="modal-img"
+                  />
+                  <button className="next-btn" onClick={nextImage}>
+                    →
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>
+      <FooterComponent />
     </div>
   );
 };

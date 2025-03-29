@@ -18,6 +18,10 @@ app.use("/images", express.static("uploads"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors({ origin: "*" }));
+app.use((req, res, next) => {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  next();
+});
 
 app.use("/api/item", require("./routes/item-route"));
 
