@@ -1,77 +1,86 @@
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
+.main-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 20px;
 }
 
-.header {
-  background: url("../../../res/bg_newfix.jpg") center center;
-  background-size: 100%;
-  height: 40rem;
-  width: 100%;
-  overflow: hidden;
+.search-section {
+  text-align: center;
+  margin-bottom: 30px;
 }
 
-.search {
-  display: flex;
-  justify-content: center;
+.search-section h1 {
+  font-size: 28px;
+  margin-bottom: 16px;
+  color: #333;
 }
 
-.folder-container {
+.search-input {
+  padding: 10px 16px;
+  font-size: 16px;
+  width: 300px;
+  max-width: 80%;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  outline: none;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.search-input:focus {
+  border-color: #999;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+}
+
+.folder-list {
   display: flex;
   flex-wrap: wrap;
-  gap: 80px;
+  gap: 32px;
   justify-content: center;
-  margin: 20px auto; /* 讓整個區塊置中 */
-  max-width: 1100px; /* 設定最大寬度，避免過寬 */
-  padding: 20px; /* 增加內距，讓它不會太貼邊 */
 }
 
-.folder-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+.folder-card {
+  width: 220px;
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 16px;
   text-align: center;
   text-decoration: none;
-  color: black;
-  position: relative; /* 設定為相對定位，讓內部元素可以絕對定位 */
-  padding: 20px 10px 10px; /* 上方留點空間 */
-  width: 140px;
-  transition: transform 0.2s ease-in-out;
+  color: #333;
+  transition: transform 0.2s ease;
 }
 
-.folder-item:hover {
-  transform: scale(1.1);
+.folder-card:hover {
+  transform: translateY(-5px);
 }
 
-.latest-stone-image {
-  width: 150px; /* 縮小圖片，讓它不會蓋住整個資料夾 */
-  height: 70px;
+.folder-image-container {
+  position: relative;
+  margin-bottom: 12px;
+}
+
+.preview-img {
+  width: 100%;
+  height: 140px;
   object-fit: cover;
-  border-radius: 6px;
+  border-radius: 8px;
+}
+
+.folder-icon {
   position: absolute;
-  top: 50px; /* 往上移，讓圖片壓在資料夾上 */
-  left: 50%;
-  transform: translateX(-50%); /* 讓圖片水平居中 */
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* 加陰影讓圖片更明顯 */
+  bottom: -10px;
+  right: -10px;
+  width: 40px;
+  opacity: 0.9;
 }
 
-/* 石頭數量文字 (現貨片數) */
-.stone-count {
-  position: absolute;
-  top: 120px; /* 放在資料夾上方 */
-  left: 25%;
-  transform: translateX(-50%);
-  color: gray;
-  padding: 5px -10px;
+.folder-color {
+  font-weight: bold;
+  font-size: 18px;
 }
 
-/* 資料夾圖片 */
-.folder-image {
-  width: 180px;
-  height: auto;
-}
-
-.folder-item p {
-  margin-top: 8px;
+.folder-count {
+  font-size: 14px;
+  color: #555;
 }

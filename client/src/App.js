@@ -4,6 +4,7 @@ import FolderComponent from "./components/Folder-component/Folder-component";
 import Layout from "./components/Layout";
 import itemService from "./services/item.service";
 import { useState } from "react";
+import AdminComponent from "./components/admin-component/admin-component";
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
         <Route path="/" element={<Layout />}>
           <Route index element={<HomeComponent />} />
           <Route path="/folder/:color" element={<FolderComponent />} />
+          <Route path="/admin" element={<AdminComponent />} />
         </Route>
       </Routes>
     </BrowserRouter>
