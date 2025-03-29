@@ -40,7 +40,7 @@ const AdminComponent = () => {
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      setNewStone({ ...newStone, image: file });
+      setNewStone({ ...newStone, image: file.name });
       setPreviewUrl(URL.createObjectURL(file));
     }
   };
@@ -53,12 +53,11 @@ const AdminComponent = () => {
 
     try {
       // 第一步：上傳圖片
-      const photoRes = await itemService.postPhoto(formData);
-      const imagePath = photoRes.data.imagePath;
+      await itemService.postPhoto(formData);
 
       // 第二步：上傳商品資料
       const { color, width, height } = newStone;
-      await itemService.post(color, height, width, imagePath);
+      await itemService.post(color, height, width, newStone.image);
 
       // 清空表單並重新抓資料
       setNewStone({ color: "", width: "", height: "", image: null });
@@ -107,12 +106,7 @@ const AdminComponent = () => {
           onChange={handleInputChange}
           required
         />
-        <input
-          type="file"
-          accept="image/*"
-          onChange={handleFileChange}
-          required
-        />
+        <input type="file" onChange={handleFileChange} required />
         <button type="submit">上傳</button>
         {previewUrl && (
           <div className="preview-container">
