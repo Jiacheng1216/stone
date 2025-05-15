@@ -13,9 +13,10 @@ const AdminComponent = () => {
     height: "",
     image: null,
   });
-  const [previewUrl, setPreviewUrl] = useState(null);
+  
   //選擇檔案 上傳圖片
-  let [selectedFile, setSelectedFile] = useState(null);
+  const [selectedFiles, setSelectedFiles] = useState([]); // 替代原本 selectedFile
+  const [previewUrls, setPreviewUrls] = useState([]); // 多圖預覽
 
   useEffect(() => {
     // 檢查是否已經登入
@@ -41,31 +42,35 @@ const AdminComponent = () => {
   };
 
   const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      setNewStone({ ...newStone, image: file.name });
-      setSelectedFile(file);
-      setPreviewUrl(URL.createObjectURL(file));
+    const files = Array.from(e.target.files);
+    if (files.length > 0) {
+      setSelectedFiles(files);
+      setPreviewUrls(files.map(file => URL.createObjectURL(file)));
     }
   };
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const formData = new FormData();
-    formData.append("photo", selectedFile);
-
     try {
-      // 第一步：上傳圖片
-      await itemService.postPhoto(formData);
-
-      // 第二步：上傳商品資料
-      const { color, width, height } = newStone;
-      await itemService.post(color, height, width, newStone.image);
+      for (const file of selectedFiles) {
+        const formData = new FormData();
+        formData.append("photo", file);
+  
+        // 1. 上傳圖片
+        await itemService.postPhoto(formData);
+  
+        // 2. 上傳資料（用每個檔案的檔名當 image）
+        const { color, width, height } = newStone;
+        await itemService.post(color, height, width, file.name);
+      }
 
       // 清空表單並重新抓資料
       setNewStone({ color: "", width: "", height: "", image: null });
       fetchStones();
+      setSelectedFiles([]);
+      setPreviewUrls([]);
       alert("上傳成功！");
     } catch (error) {
       console.error("上傳失敗", error);
@@ -110,14 +115,16 @@ const AdminComponent = () => {
           onChange={handleInputChange}
           required
         />
-        <input type="file" onChange={handleFileChange} required />
+        <input type="file" multiple onChange={handleFileChange} required />
         <button type="submit">上傳</button>
-        {previewUrl && (
-          <div className="preview-container">
-            <p>圖片預覽：</p>
-            <img src={previewUrl} alt="預覽圖片" className="preview-img" />
-          </div>
-        )}
+        {previewUrls.length > 0 && (
+  <div className="preview-container">
+    <p>圖片預覽：</p>
+    {previewUrls.map((url, idx) => (
+      <img key={idx} src={url} alt={`預覽${idx}`} className="preview-img" />
+    ))}
+  </div>
+)}
       </form>
 
       <h2>現有大理石</h2>
