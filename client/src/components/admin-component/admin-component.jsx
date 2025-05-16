@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import itemService from "../../services/item.service";
 import "./Admin.css";
 import { useNavigate } from "react-router-dom";
-import { ip } from "../../config";
 
 const AdminComponent = () => {
   const navigate = useNavigate(); // 替代 useHistory
@@ -58,12 +57,13 @@ const AdminComponent = () => {
         const formData = new FormData();
         formData.append("photo", file);
   
-        // 1. 上傳圖片
-        await itemService.postPhoto(formData);
+        // 1. 上傳圖片並取得路徑
+        const photoRes = await itemService.postPhoto(formData); 
+        const imagePath = photoRes.data.imagePath;
   
         // 2. 上傳資料（用每個檔案的檔名當 image）
         const { color, width, height } = newStone;
-        await itemService.post(color, height, width, file.name);
+        await itemService.post(color, height, width, imagePath);
       }
 
       // 清空表單並重新抓資料
@@ -131,7 +131,7 @@ const AdminComponent = () => {
       <div className="stone-list">
         {stones.map((stone) => (
           <div key={stone._id} className="stone-item">
-            <img src={`${ip}/images/${stone.imagePath}`} alt={stone.color} />
+            <img src={stone.imagePath} alt={stone.color} />
             <p>{stone.color}</p>
             {/* 寬和高的 */}
             {/* <p>
