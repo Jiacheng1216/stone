@@ -101,7 +101,7 @@ const AdminComponent = () => {
           onChange={handleInputChange}
           required
         />
-        <input
+        {/* <input
           type="number"
           name="width"
           placeholder="寬度"
@@ -114,7 +114,7 @@ const AdminComponent = () => {
           placeholder="高度"
           onChange={handleInputChange}
           required
-        />
+        /> */}
         <input type="file" multiple onChange={handleFileChange} required />
         <button type="submit">上傳</button>
         {previewUrls.length > 0 && (
@@ -133,9 +133,9 @@ const AdminComponent = () => {
           <div key={stone._id} className="stone-item">
             <img src={`${ip}/images/${stone.imagePath}`} alt={stone.color} />
             <p>{stone.color}</p>
-            <p>
+            {/* <p>
               {stone.width} × {stone.height}
-            </p>
+            </p> */}
             <button onClick={() => handleDelete(stone._id)}>刪除</button>
           </div>
         ))}
