@@ -4,7 +4,7 @@ const API_URL = `${ip}/api/item`;
 
 class ItemService {
   //上傳商品
-  post(color, height, width, imagePath) {
+  post(color, height, width, imagePath,imagePublicId) {
     let token;
     // if (localStorage.getItem("user")) {
     //   token = JSON.parse(localStorage.getItem("user")).token;
@@ -14,7 +14,7 @@ class ItemService {
 
     return axios.post(
       API_URL,
-      { color, height, width, imagePath }
+      { color, height, width, imagePath,imagePublicId }
       // {
       //   headers: {
       //     Authorization: token,

@@ -59,11 +59,12 @@ const AdminComponent = () => {
   
         // 1. 上傳圖片並取得路徑
         const photoRes = await itemService.postPhoto(formData); 
-        const imagePath = photoRes.data.imagePath;
+        const imagePath = photoRes.data.imagePath; //cloudinary的圖片網址
+        const imagePublicId = photoRes.data.imagePublicId; //cloudinary的id
   
         // 2. 上傳資料（用每個檔案的檔名當 image）
         const { color, width, height } = newStone;
-        await itemService.post(color, height, width, imagePath);
+        await itemService.post(color, height, width, imagePath,imagePublicId);
       }
 
       // 清空表單並重新抓資料
@@ -83,6 +84,7 @@ const AdminComponent = () => {
       try {
         await itemService.deleteItem(id);
         fetchStones();
+        alert("刪除成功！");
       } catch (error) {
         console.error("刪除失敗", error);
         alert("刪除失敗，請稍後再試");
