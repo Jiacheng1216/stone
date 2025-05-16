@@ -87,13 +87,13 @@ const FolderComponent = () => {
                   {/* 下載圖片超連結 */}
                   <div className="download-img-text-div">
                     <p className="modal-color">{stones[currentIndex].color}</p>
-                    <a
+                    {/* <a
                       href={selectedImage.imagePath}
                       download
                       className="download-img-text"
                     >
                       下載圖片
-                    </a>
+                    </a> */}
                   </div>
                   <button className="close-btn" onClick={closeModal}>
                     ✖
