@@ -16,6 +16,9 @@ const AdminComponent = () => {
   //選擇檔案 上傳圖片
   const [selectedFiles, setSelectedFiles] = useState([]); // 替代原本 selectedFile
   const [previewUrls, setPreviewUrls] = useState([]); // 多圖預覽
+  
+  //進度條
+  const [uploadProgress, setUploadProgress] = useState(0);
 
   useEffect(() => {
     // 檢查是否已經登入
@@ -53,18 +56,25 @@ const AdminComponent = () => {
     e.preventDefault();
 
     try {
-      for (const file of selectedFiles) {
+      for (let i = 0; i < selectedFiles.length; i++) {
+        const file = selectedFiles[i];
         const formData = new FormData();
         formData.append("photo", file);
   
-        // 1. 上傳圖片並取得路徑
-        const photoRes = await itemService.postPhoto(formData); 
-        const imagePath = photoRes.data.imagePath; //cloudinary的圖片網址
-        const imagePublicId = photoRes.data.imagePublicId; //cloudinary的id
+        // 圖片上傳
+        const photoRes = await itemService.postPhoto(formData);
   
-        // 2. 上傳資料（用每個檔案的檔名當 image）
+        const imagePath = photoRes.data.imagePath;
+        const imagePublicId = photoRes.data.imagePublicId;
+  
         const { color, width, height } = newStone;
-        await itemService.post(color, height, width, imagePath,imagePublicId);
+  
+        // 上傳商品資料
+        await itemService.post(color, height, width, imagePath, imagePublicId);
+  
+        // 更新總進度（例如3張：33%、66%、100%）
+        const percentCompleted = Math.round(((i + 1) / selectedFiles.length) * 100);
+        setUploadProgress(percentCompleted);
       }
 
       // 清空表單並重新抓資料
@@ -72,6 +82,7 @@ const AdminComponent = () => {
       fetchStones();
       setSelectedFiles([]);
       setPreviewUrls([]);
+      setUploadProgress(0);
       alert("上傳成功！");
     } catch (error) {
       console.error("上傳失敗", error);
@@ -119,6 +130,14 @@ const AdminComponent = () => {
         /> */}
         <input type="file" multiple onChange={handleFileChange} required />
         <button type="submit">上傳</button>
+
+        {uploadProgress > 0 && uploadProgress < 100 && (
+  <div className="upload-progress">
+    <progress value={uploadProgress} max="100" />
+    <span>{uploadProgress}%</span>
+  </div>
+)}
+
         {previewUrls.length > 0 && (
   <div className="preview-container">
     <p>圖片預覽：</p>
