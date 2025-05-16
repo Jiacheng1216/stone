@@ -133,6 +133,7 @@ const AdminComponent = () => {
           <div key={stone._id} className="stone-item">
             <img src={`${ip}/images/${stone.imagePath}`} alt={stone.color} />
             <p>{stone.color}</p>
+            {/* 寬和高的 */}
             {/* <p>
               {stone.width} × {stone.height}
             </p> */}
