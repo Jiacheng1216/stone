@@ -133,6 +133,7 @@ const AdminComponent = () => {
 
         {uploadProgress > 0 && uploadProgress < 100 && (
   <div className="upload-progress">
+    <p>上傳中...</p>
     <progress value={uploadProgress} max="100" />
     <span>{uploadProgress}%</span>
   </div>

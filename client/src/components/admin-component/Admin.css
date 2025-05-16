@@ -78,7 +78,14 @@ h2 {
 
 .upload-progress {
   margin-top: 10px;
+  text-align: center;
 }
+
+.upload-progress p {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
 .upload-progress progress {
   width: 100%;
   height: 20px;
