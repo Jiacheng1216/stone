@@ -226,11 +226,12 @@ const AdminComponent = () => {
 )}
       <div className="stone-list">
         {stones.map((stone) => (
-          <div key={stone._id} className="stone-item" >
+          <div key={stone._id} className="stone-item" onClick={() => handleSelect(stone._id)} >
             <input
         type="checkbox"
         checked={selectedIds.includes(stone._id)}
         onChange={() => handleSelect(stone._id)}
+        onClick={(e) => e.stopPropagation()}     // 避免點 checkbox 也觸發整個卡片的 onClick
       />
             <img src={stone.imagePath} alt={stone.color} />
             <p>{stone.color}</p>
