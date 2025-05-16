@@ -21,6 +21,8 @@ const AdminComponent = () => {
   //進度條
   const [uploadProgress, setUploadProgress] = useState(0);
   const [visibleProgress, setVisibleProgress] = useState(false);
+  const [currentUploadIndex, setCurrentUploadIndex] = useState(0);
+
 
   useEffect(() => {
     // 檢查是否已經登入
@@ -78,6 +80,7 @@ const AdminComponent = () => {
         // 更新總進度（例如3張：33%、66%、100%）
         const percentCompleted = Math.round(((i + 1) / selectedFiles.length) * 100);
         setUploadProgress(percentCompleted);
+        setCurrentUploadIndex(i);
       }
 
       // 清空表單並重新抓資料
@@ -87,6 +90,7 @@ const AdminComponent = () => {
       setPreviewUrls([]);
       setUploadProgress(0);
       setVisibleProgress(false);
+      setCurrentUploadIndex(0);
       alert("上傳成功！");
     } catch (error) {
       console.error("上傳失敗", error);
@@ -140,7 +144,7 @@ const AdminComponent = () => {
 
         {visibleProgress && (
   <div className="upload-progress">
-    <p>上傳中...</p>
+    <p>上傳第 {currentUploadIndex + 1} 張，共 {selectedFiles.length} 張...</p>
     <progress value={uploadProgress} max="100" />
     <span>{uploadProgress}%</span>
   </div>
