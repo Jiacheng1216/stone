@@ -105,3 +105,18 @@ h2 {
   cursor: pointer;
   border-radius: 4px;
 }
+
+.clear-selection-btn {
+  background-color: #f0f0f0;
+  color: #333;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 6px 12px;
+  margin: 10px 0 0 12px;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.clear-selection-btn:hover {
+  background-color: #e0e0e0;
+}

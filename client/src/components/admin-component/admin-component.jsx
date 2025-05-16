@@ -66,6 +66,7 @@ const AdminComponent = () => {
   //處理提交
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (visibleProgress || visibleDeleteProgress) return; // ⛔ 阻止重複提交
 
     try {
       setVisibleProgress(true);
@@ -188,7 +189,7 @@ const AdminComponent = () => {
           required
         /> */}
         <input type="file" multiple onChange={handleFileChange} required />
-        <button type="submit">上傳</button>
+        <button type="submit" disabled={visibleProgress || visibleDeleteProgress}>上傳</button>
 
         {visibleProgress && (
   <div className="upload-progress">
@@ -220,9 +221,12 @@ const AdminComponent = () => {
       <button className="bulk-delete-btn" onClick={handleBulkDelete}>
     刪除選取的圖片 ({selectedIds.length})
   </button>
+  {selectedIds.length > 0 && (
+  <button className="clear-selection-btn" onClick={() => setSelectedIds([])}>取消所有勾選</button>
+)}
       <div className="stone-list">
         {stones.map((stone) => (
-          <div key={stone._id} className="stone-item">
+          <div key={stone._id} className="stone-item" >
             <input
         type="checkbox"
         checked={selectedIds.includes(stone._id)}
