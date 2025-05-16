@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import itemService from "../../services/item.service";
 import "./Admin.css";
 import { useNavigate } from "react-router-dom";
+import NavbarComponent from "../navbar-component/NavbarComponent";
 
 const AdminComponent = () => {
   const navigate = useNavigate(); // 替代 useHistory
@@ -104,6 +105,9 @@ const AdminComponent = () => {
   };
 
   return (
+    <div>
+      <NavbarComponent />
+    
     <div className="admin-container">
       <h2>上傳新大理石</h2>
       <form className="upload-form" onSubmit={handleSubmit}>
@@ -163,6 +167,7 @@ const AdminComponent = () => {
           </div>
         ))}
       </div>
+    </div>
     </div>
   );
 };
