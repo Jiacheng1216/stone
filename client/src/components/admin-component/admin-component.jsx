@@ -20,6 +20,7 @@ const AdminComponent = () => {
   
   //進度條
   const [uploadProgress, setUploadProgress] = useState(0);
+  const [visibleProgress, setVisibleProgress] = useState(false);
 
   useEffect(() => {
     // 檢查是否已經登入
@@ -57,6 +58,7 @@ const AdminComponent = () => {
     e.preventDefault();
 
     try {
+      setVisibleProgress(true);
       for (let i = 0; i < selectedFiles.length; i++) {
         const file = selectedFiles[i];
         const formData = new FormData();
@@ -84,6 +86,7 @@ const AdminComponent = () => {
       setSelectedFiles([]);
       setPreviewUrls([]);
       setUploadProgress(0);
+      setVisibleProgress(false);
       alert("上傳成功！");
     } catch (error) {
       console.error("上傳失敗", error);
@@ -135,7 +138,7 @@ const AdminComponent = () => {
         <input type="file" multiple onChange={handleFileChange} required />
         <button type="submit">上傳</button>
 
-        {uploadProgress > 0 && uploadProgress < 100 && (
+        {visibleProgress && (
   <div className="upload-progress">
     <p>上傳中...</p>
     <progress value={uploadProgress} max="100" />
