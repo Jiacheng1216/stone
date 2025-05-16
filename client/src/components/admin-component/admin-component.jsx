@@ -18,11 +18,17 @@ const AdminComponent = () => {
   const [selectedFiles, setSelectedFiles] = useState([]); // 替代原本 selectedFile
   const [previewUrls, setPreviewUrls] = useState([]); // 多圖預覽
   
-  //進度條
+  //上傳進度條
   const [uploadProgress, setUploadProgress] = useState(0);
   const [visibleProgress, setVisibleProgress] = useState(false);
   const [currentUploadIndex, setCurrentUploadIndex] = useState(0);
+  //刪除進度條
+  const [deleteProgress, setDeleteProgress] = useState(0);
+  const [visibleDeleteProgress, setVisibleDeleteProgress] = useState(false);
+  const [currentDeleteIndex, setCurrentDeleteIndex] = useState(0);
 
+  //批量刪除圖片 選取
+  const [selectedIds, setSelectedIds] = useState([]);
 
   useEffect(() => {
     // 檢查是否已經登入
@@ -42,11 +48,13 @@ const AdminComponent = () => {
     }
   };
 
+  //處理輸入文字
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setNewStone({ ...newStone, [name]: value });
   };
 
+  //處理預覽圖片
   const handleFileChange = (e) => {
     const files = Array.from(e.target.files);
     if (files.length > 0) {
@@ -55,7 +63,7 @@ const AdminComponent = () => {
     }
   };
 
-
+  //處理提交
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -98,15 +106,55 @@ const AdminComponent = () => {
     }
   };
 
-  const handleDelete = async (id) => {
-    if (window.confirm("確定要刪除這塊大理石嗎？")) {
+  // //處理刪除
+  // const handleDelete = async (id) => {
+  //   if (window.confirm("確定要刪除這塊大理石嗎？")) {
+  //     try {
+  //       await itemService.deleteItem(id);
+  //       fetchStones();
+  //       alert("刪除成功！");
+  //     } catch (error) {
+  //       console.error("刪除失敗", error);
+  //       alert("刪除失敗，請稍後再試");
+  //     }
+  //   }
+  // };
+
+  //處理選取
+  const handleSelect = (id) => {
+    setSelectedIds((prevSelected) =>
+      prevSelected.includes(id)
+        ? prevSelected.filter((item) => item !== id)
+        : [...prevSelected, id]
+    );
+  };
+
+  //處理批量刪除邏輯
+  const handleBulkDelete = async () => {
+    if (selectedIds.length === 0) {
+      alert("請選取要刪除的圖片");
+      return;
+    }
+  
+    if (window.confirm(`確定要刪除 ${selectedIds.length} 張圖片嗎？`)) {
       try {
-        await itemService.deleteItem(id);
+        setVisibleDeleteProgress(true)
+        for (let j = 0; j<selectedIds.length;j++) {
+          await itemService.deleteItem(selectedIds[j]);
+          // 更新總進度（例如3張：33%、66%、100%）
+        const percentCompleted = Math.round(((j + 1) / selectedIds.length) * 100);
+        setDeleteProgress(percentCompleted);
+        setCurrentDeleteIndex(j);
+        }
+        alert("選取的圖片刪除成功！");
         fetchStones();
-        alert("刪除成功！");
+        setSelectedIds([]);
+        setVisibleDeleteProgress(false);
+        setDeleteProgress(0);
+        setCurrentDeleteIndex(0);
       } catch (error) {
-        console.error("刪除失敗", error);
-        alert("刪除失敗，請稍後再試");
+        console.error("批量刪除失敗", error);
+        alert("刪除過程出現問題");
       }
     }
   };
@@ -150,6 +198,14 @@ const AdminComponent = () => {
   </div>
 )}
 
+{visibleDeleteProgress && (
+  <div className="upload-progress">
+    <p>刪除第 {currentDeleteIndex + 1} 張，共 {selectedIds.length} 張...</p>
+    <progress value={deleteProgress} max="100" />
+    <span>{deleteProgress}%</span>
+  </div>
+)}
+
         {previewUrls.length > 0 && (
   <div className="preview-container">
     <p>圖片預覽：</p>
@@ -161,16 +217,24 @@ const AdminComponent = () => {
       </form>
 
       <h2>現有大理石</h2>
+      <button className="bulk-delete-btn" onClick={handleBulkDelete}>
+    刪除選取的圖片 ({selectedIds.length})
+  </button>
       <div className="stone-list">
         {stones.map((stone) => (
           <div key={stone._id} className="stone-item">
+            <input
+        type="checkbox"
+        checked={selectedIds.includes(stone._id)}
+        onChange={() => handleSelect(stone._id)}
+      />
             <img src={stone.imagePath} alt={stone.color} />
             <p>{stone.color}</p>
             {/* 寬和高的 */}
             {/* <p>
               {stone.width} × {stone.height}
             </p> */}
-            <button onClick={() => handleDelete(stone._id)}>刪除</button>
+            {/* <button onClick={() => handleDelete(stone._id)}>刪除</button> */}
           </div>
         ))}
       </div>

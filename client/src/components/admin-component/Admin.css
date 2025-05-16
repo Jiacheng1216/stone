@@ -95,3 +95,13 @@ h2 {
   text-align: center;
   margin-top: 5px;
 }
+
+.bulk-delete-btn {
+  background-color: #e74c3c;
+  color: white;
+  padding: 8px 12px;
+  border: none;
+  margin-bottom: 10px;
+  cursor: pointer;
+  border-radius: 4px;
+}
