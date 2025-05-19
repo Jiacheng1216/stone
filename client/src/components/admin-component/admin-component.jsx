@@ -181,9 +181,16 @@ const AdminComponent = () => {
     setPreviewUrls(newPreviews);
   };
 
+  //過濾搜尋欄搜尋的石頭
   const filteredStones = stones.filter((stone) =>
     stone.color.toLowerCase().includes(search.toLowerCase())
   );
+
+  //全部勾選
+  const handleSelectAll = () => {
+    const allIds = filteredStones.map((stone) => stone._id);
+    setSelectedIds(allIds);
+  };
 
   return (
     <div>
@@ -281,6 +288,7 @@ const AdminComponent = () => {
         </form>
 
         <h2>現有大理石</h2>
+
         <button
           className="bulk-delete-btn"
           onClick={handleBulkDelete}
@@ -288,6 +296,15 @@ const AdminComponent = () => {
         >
           刪除選取的圖片 ({selectedIds.length})
         </button>
+
+        <button
+          className="select-all-btn"
+          onClick={handleSelectAll}
+          disabled={visibleDeleteProgress || filteredStones.length === 0}
+        >
+          全選所有圖片
+        </button>
+
         {selectedIds.length > 0 && (
           <button
             className="clear-selection-btn"
@@ -312,12 +329,14 @@ const AdminComponent = () => {
               key={stone._id}
               className="stone-item"
               onClick={() => handleSelect(stone._id)}
+              disabled={visibleDeleteProgress}
             >
               <input
                 type="checkbox"
                 checked={selectedIds.includes(stone._id)}
                 onChange={() => handleSelect(stone._id)}
                 onClick={(e) => e.stopPropagation()} // 避免點 checkbox 也觸發整個卡片的 onClick
+                disabled={visibleDeleteProgress}
               />
               <img src={stone.imagePath} alt={stone.color} />
               <p>{stone.color}</p>

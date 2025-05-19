@@ -1,3 +1,4 @@
+/* ====== 容器與整體樣式 ====== */
 .admin-container {
   max-width: 1000px;
   margin: 0 auto;
@@ -10,6 +11,7 @@ h2 {
   color: #333;
 }
 
+/* ====== 表單區塊 ====== */
 .upload-form {
   display: flex;
   flex-direction: column;
@@ -35,6 +37,78 @@ h2 {
   background-color: #555;
 }
 
+.hidden-input {
+  display: none;
+}
+
+.custom-upload-button {
+  display: inline-block;
+  background-color: #333;
+  color: white;
+  padding: 10px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s;
+  width: 100px;
+}
+
+.custom-upload-button:hover {
+  background-color: #555;
+}
+
+/* ====== 圖片預覽 ====== */
+.preview-wrapper {
+  position: relative;
+  display: inline-block;
+  margin: 4px;
+}
+
+.preview-img {
+  max-width: 200px;
+  max-height: 200px;
+  object-fit: contain;
+  border: 1px solid #ccc;
+  padding: 6px;
+  background-color: #f5f5f5;
+  border-radius: 6px;
+  display: block;
+}
+
+.remove-preview-btn {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  /* 可加上背景樣式：如紅色圓形按鈕 */
+}
+
+.remove-preview-btn:hover {
+  background-color: #d9363e;
+}
+
+/* ====== 進度條 ====== */
+.upload-progress {
+  margin-top: 10px;
+  text-align: center;
+}
+
+.upload-progress p {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.upload-progress progress {
+  width: 100%;
+  height: 20px;
+}
+
+.upload-progress span {
+  display: block;
+  text-align: center;
+  margin-top: 5px;
+}
+
+/* ====== 石頭清單 ====== */
 .stone-list {
   display: flex;
   flex-wrap: wrap;
@@ -63,69 +137,7 @@ h2 {
   margin: 4px 0;
 }
 
-/* 圖片與 X 按鈕的包裝容器 */
-.preview-wrapper {
-  position: relative;
-  display: inline-block;
-  margin: 4px;
-}
-
-/* 預覽圖片本體 */
-.preview-img {
-  max-width: 200px;
-  max-height: 200px;
-  object-fit: contain;
-  border: 1px solid #ccc;
-  padding: 6px;
-  background-color: #f5f5f5;
-  border-radius: 6px;
-  display: block;
-}
-
-/* X 按鈕 */
-.remove-preview-btn {
-  position: absolute;
-  top: -4px;
-  right: -4px;
-  /* background-color: #ff4d4f;
-  color: white;
-  border: none;
-  border-radius: 50%;
-  width: 22px;
-  height: 22px;
-  font-size: 16px;
-  line-height: 22px;
-  text-align: center;
-  cursor: pointer;
-  z-index: 10;
-  box-shadow: 0 0 4px rgba(0, 0, 0, 0.3);
-  transition: background-color 0.2s; */
-}
-
-.remove-preview-btn:hover {
-  background-color: #d9363e;
-}
-
-.upload-progress {
-  margin-top: 10px;
-  text-align: center;
-}
-
-.upload-progress p {
-  font-weight: bold;
-  margin-bottom: 5px;
-}
-
-.upload-progress progress {
-  width: 100%;
-  height: 20px;
-}
-.upload-progress span {
-  display: block;
-  text-align: center;
-  margin-top: 5px;
-}
-
+/* ====== 操作按鈕 ====== */
 .bulk-delete-btn {
   background-color: #e74c3c;
   color: white;
@@ -137,7 +149,8 @@ h2 {
   border-radius: 4px;
 }
 
-.clear-selection-btn {
+.clear-selection-btn,
+.select-all-btn {
   background-color: #f0f0f0;
   color: #333;
   border: 1px solid #ccc;
@@ -149,36 +162,14 @@ h2 {
   transition: all 0.2s ease-in-out;
 }
 
-.clear-selection-btn:hover {
+.clear-selection-btn:hover,
+.select-all-btn:hover {
   background-color: #e0e0e0;
 }
 
-button[disabled] {
+/* ====== 禁用狀態樣式 ====== */
+button[disabled],
+label[disabled]{
   opacity: 0.5;
   cursor: not-allowed;
-}
-
-label[disabled] {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-.hidden-input {
-  display: none;
-}
-
-.custom-upload-button {
-  display: inline-block;
-  background-color: #333;
-  color: white;
-  padding: 10px 16px;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 16px;
-  transition: background-color 0.3s;
-  width: 100px;
-}
-
-.custom-upload-button:hover {
-  background-color: #555;
 }
