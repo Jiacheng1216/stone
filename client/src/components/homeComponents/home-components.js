@@ -69,7 +69,7 @@ const HomeComponent = () => {
               <Link to={`/folder/${color}`} key={color} className="folder-card">
                 <div className="folder-image-container">
                   <img
-                    src={`${ip}/images/${latestStone.imagePath}`}
+                    src={latestStone.imagePath}
                     alt={`${color} marble`}
                     className="preview-img"
                   />
