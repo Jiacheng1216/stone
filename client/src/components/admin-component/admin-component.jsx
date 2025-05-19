@@ -27,6 +27,9 @@ const AdminComponent = () => {
   const [visibleUploadProgress, setVisibleUploadProgress] = useState(false); //上傳時顯示
   const [visibleDeleteProgress, setVisibleDeleteProgress] = useState(false); //刪除時顯示
 
+  //搜尋
+  const [search, setSearch] = useState("");
+
   useEffect(() => {
     // 檢查是否已經登入
     if (localStorage.getItem("isAdmin") !== "true") {
@@ -178,6 +181,10 @@ const AdminComponent = () => {
     setPreviewUrls(newPreviews);
   };
 
+  const filteredStones = stones.filter((stone) =>
+    stone.color.toLowerCase().includes(search.toLowerCase())
+  );
+
   return (
     <div>
       <NavbarComponent />
@@ -290,8 +297,17 @@ const AdminComponent = () => {
             取消所有勾選
           </button>
         )}
+
+        <input
+          type="text"
+          placeholder="搜尋顏色..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          className="search-input"
+        />
+
         <div className="stone-list">
-          {stones.map((stone) => (
+          {filteredStones.map((stone) => (
             <div
               key={stone._id}
               className="stone-item"
