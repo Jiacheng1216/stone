@@ -120,3 +120,8 @@ h2 {
 .clear-selection-btn:hover {
   background-color: #e0e0e0;
 }
+
+button[disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

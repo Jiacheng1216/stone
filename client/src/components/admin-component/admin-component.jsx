@@ -13,22 +13,19 @@ const AdminComponent = () => {
     height: "",
     image: null,
   });
-  
+
   //選擇檔案 上傳圖片
-  const [selectedFiles, setSelectedFiles] = useState([]); // 替代原本 selectedFile
+  const [selectedFiles, setSelectedFiles] = useState([]); //已選擇的圖片
   const [previewUrls, setPreviewUrls] = useState([]); // 多圖預覽
-  
-  //上傳進度條
-  const [uploadProgress, setUploadProgress] = useState(0);
-  const [visibleProgress, setVisibleProgress] = useState(false);
-  const [currentUploadIndex, setCurrentUploadIndex] = useState(0);
-  //刪除進度條
-  const [deleteProgress, setDeleteProgress] = useState(0);
-  const [visibleDeleteProgress, setVisibleDeleteProgress] = useState(false);
-  const [currentDeleteIndex, setCurrentDeleteIndex] = useState(0);
 
   //批量刪除圖片 選取
   const [selectedIds, setSelectedIds] = useState([]);
+
+  //進度條
+  const [progress, setProgress] = useState(0);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [visibleUploadProgress, setVisibleUploadProgress] = useState(false); //上傳時顯示
+  const [visibleDeleteProgress, setVisibleDeleteProgress] = useState(false); //刪除時顯示
 
   useEffect(() => {
     // 檢查是否已經登入
@@ -39,6 +36,9 @@ const AdminComponent = () => {
     }
   }, [navigate]);
 
+  /**
+   * 抓取石頭
+   */
   const fetchStones = async () => {
     try {
       const response = await itemService.get();
@@ -59,48 +59,46 @@ const AdminComponent = () => {
     const files = Array.from(e.target.files);
     if (files.length > 0) {
       setSelectedFiles(files);
-      setPreviewUrls(files.map(file => URL.createObjectURL(file)));
+      setPreviewUrls(files.map((file) => URL.createObjectURL(file)));
     }
   };
 
   //處理提交
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (visibleProgress || visibleDeleteProgress) return; // ⛔ 阻止重複提交
+    if (visibleUploadProgress) return; // ⛔ 阻止重複提交
 
     try {
-      setVisibleProgress(true);
+      setVisibleUploadProgress(true);
       for (let i = 0; i < selectedFiles.length; i++) {
         const file = selectedFiles[i];
         const formData = new FormData();
         formData.append("photo", file);
-  
+
         // 圖片上傳
         const photoRes = await itemService.postPhoto(formData);
-  
+
         const imagePath = photoRes.data.imagePath;
         const imagePublicId = photoRes.data.imagePublicId;
-  
+
         const { color, width, height } = newStone;
-  
+
         // 上傳商品資料
         await itemService.post(color, height, width, imagePath, imagePublicId);
-  
+
         // 更新總進度（例如3張：33%、66%、100%）
-        const percentCompleted = Math.round(((i + 1) / selectedFiles.length) * 100);
-        setUploadProgress(percentCompleted);
-        setCurrentUploadIndex(i);
+        updateProgress(i, selectedFiles.length);
       }
 
       // 清空表單並重新抓資料
       setNewStone({ color: "", width: "", height: "", image: null });
-      fetchStones();
       setSelectedFiles([]);
       setPreviewUrls([]);
-      setUploadProgress(0);
-      setVisibleProgress(false);
-      setCurrentUploadIndex(0);
+      setProgress(0);
+      setVisibleUploadProgress(false);
+      setCurrentIndex(0);
       alert("上傳成功！");
+      fetchStones();
     } catch (error) {
       console.error("上傳失敗", error);
       alert("上傳失敗，請稍後再試");
@@ -136,23 +134,21 @@ const AdminComponent = () => {
       alert("請選取要刪除的圖片");
       return;
     }
-  
+
     if (window.confirm(`確定要刪除 ${selectedIds.length} 張圖片嗎？`)) {
       try {
-        setVisibleDeleteProgress(true)
-        for (let j = 0; j<selectedIds.length;j++) {
+        setVisibleDeleteProgress(true);
+        for (let j = 0; j < selectedIds.length; j++) {
           await itemService.deleteItem(selectedIds[j]);
           // 更新總進度（例如3張：33%、66%、100%）
-        const percentCompleted = Math.round(((j + 1) / selectedIds.length) * 100);
-        setDeleteProgress(percentCompleted);
-        setCurrentDeleteIndex(j);
+          updateProgress(j, selectedIds.length);
         }
         alert("選取的圖片刪除成功！");
         fetchStones();
         setSelectedIds([]);
         setVisibleDeleteProgress(false);
-        setDeleteProgress(0);
-        setCurrentDeleteIndex(0);
+        setProgress(0);
+        setCurrentIndex(0);
       } catch (error) {
         console.error("批量刪除失敗", error);
         alert("刪除過程出現問題");
@@ -160,21 +156,28 @@ const AdminComponent = () => {
     }
   };
 
+  //更新進度條邏輯
+  const updateProgress = (index, total) => {
+    const percent = Math.round(((index + 1) / total) * 100);
+    setProgress(percent);
+    setCurrentIndex(index);
+  };
+
   return (
     <div>
       <NavbarComponent />
-    
-    <div className="admin-container">
-      <h2>上傳新大理石</h2>
-      <form className="upload-form" onSubmit={handleSubmit}>
-        <input
-          type="text"
-          name="color"
-          placeholder="顏色"
-          onChange={handleInputChange}
-          required
-        />
-        {/* <input
+
+      <div className="admin-container">
+        <h2>上傳新大理石</h2>
+        <form className="upload-form" onSubmit={handleSubmit}>
+          <input
+            type="text"
+            name="color"
+            placeholder="顏色"
+            onChange={handleInputChange}
+            required
+          />
+          {/* <input
           type="number"
           name="width"
           placeholder="寬度"
@@ -188,62 +191,82 @@ const AdminComponent = () => {
           onChange={handleInputChange}
           required
         /> */}
-        <input type="file" multiple onChange={handleFileChange} required />
-        <button type="submit" disabled={visibleProgress || visibleDeleteProgress}>上傳</button>
+          <input type="file" multiple onChange={handleFileChange} required />
+          <button type="submit" disabled={visibleUploadProgress}>
+            上傳
+          </button>
 
-        {visibleProgress && (
-  <div className="upload-progress">
-    <p>上傳第 {currentUploadIndex + 1} 張，共 {selectedFiles.length} 張...</p>
-    <progress value={uploadProgress} max="100" />
-    <span>{uploadProgress}%</span>
-  </div>
-)}
+          {visibleUploadProgress && (
+            <div className="upload-progress">
+              <p>
+                上傳第 {currentIndex + 1} 張，共 {selectedFiles.length} 張...
+              </p>
+              <progress value={progress} max="100" />
+              <span>{progress}%</span>
+            </div>
+          )}
 
-{visibleDeleteProgress && (
-  <div className="upload-progress">
-    <p>刪除第 {currentDeleteIndex + 1} 張，共 {selectedIds.length} 張...</p>
-    <progress value={deleteProgress} max="100" />
-    <span>{deleteProgress}%</span>
-  </div>
-)}
+          {visibleDeleteProgress && (
+            <div className="upload-progress">
+              <p>
+                刪除第 {currentIndex + 1} 張，共 {selectedIds.length} 張...
+              </p>
+              <progress value={progress} max="100" />
+              <span>{progress}%</span>
+            </div>
+          )}
 
-        {previewUrls.length > 0 && (
-  <div className="preview-container">
-    <p>圖片預覽：</p>
-    {previewUrls.map((url, idx) => (
-      <img key={idx} src={url} alt={`預覽${idx}`} className="preview-img" />
-    ))}
-  </div>
-)}
-      </form>
+          {previewUrls.length > 0 && (
+            <div className="preview-container">
+              <p>圖片預覽：</p>
+              {previewUrls.map((url, idx) => (
+                <img
+                  key={idx}
+                  src={url}
+                  alt={`預覽${idx}`}
+                  className="preview-img"
+                />
+              ))}
+            </div>
+          )}
+        </form>
 
-      <h2>現有大理石</h2>
-      <button className="bulk-delete-btn" onClick={handleBulkDelete}>
-    刪除選取的圖片 ({selectedIds.length})
-  </button>
-  {selectedIds.length > 0 && (
-  <button className="clear-selection-btn" onClick={() => setSelectedIds([])}>取消所有勾選</button>
-)}
-      <div className="stone-list">
-        {stones.map((stone) => (
-          <div key={stone._id} className="stone-item" onClick={() => handleSelect(stone._id)} >
-            <input
-        type="checkbox"
-        checked={selectedIds.includes(stone._id)}
-        onChange={() => handleSelect(stone._id)}
-        onClick={(e) => e.stopPropagation()}     // 避免點 checkbox 也觸發整個卡片的 onClick
-      />
-            <img src={stone.imagePath} alt={stone.color} />
-            <p>{stone.color}</p>
-            {/* 寬和高的 */}
-            {/* <p>
+        <h2>現有大理石</h2>
+        <button className="bulk-delete-btn" onClick={handleBulkDelete}>
+          刪除選取的圖片 ({selectedIds.length})
+        </button>
+        {selectedIds.length > 0 && (
+          <button
+            className="clear-selection-btn"
+            onClick={() => setSelectedIds([])}
+          >
+            取消所有勾選
+          </button>
+        )}
+        <div className="stone-list">
+          {stones.map((stone) => (
+            <div
+              key={stone._id}
+              className="stone-item"
+              onClick={() => handleSelect(stone._id)}
+            >
+              <input
+                type="checkbox"
+                checked={selectedIds.includes(stone._id)}
+                onChange={() => handleSelect(stone._id)}
+                onClick={(e) => e.stopPropagation()} // 避免點 checkbox 也觸發整個卡片的 onClick
+              />
+              <img src={stone.imagePath} alt={stone.color} />
+              <p>{stone.color}</p>
+              {/* 寬和高的 */}
+              {/* <p>
               {stone.width} × {stone.height}
             </p> */}
-            {/* <button onClick={() => handleDelete(stone._id)}>刪除</button> */}
-          </div>
-        ))}
+              {/* <button onClick={() => handleDelete(stone._id)}>刪除</button> */}
+            </div>
+          ))}
+        </div>
       </div>
-    </div>
     </div>
   );
 };
