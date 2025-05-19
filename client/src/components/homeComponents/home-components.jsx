@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from "react";
 import "./home-components.css";
 import itemService from "../../services/item.service";
-import { Link, Navigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import NavbarComponent from "../navbar-component/NavbarComponent";
 import FooterComponent from "../footer-component/FooterComponent";
-import { ip } from "../../config";
 
 const HomeComponent = () => {
-  const [stones, setStones] = useState([]);
   const [groupedStones, setGroupedStones] = useState({});
   const [search, setSearch] = useState("");
 
@@ -18,7 +16,6 @@ const HomeComponent = () => {
   const fetchItem = async () => {
     try {
       const response = await itemService.get();
-      setStones(response.data);
       groupByColor(response.data);
     } catch (e) {
       console.log(e);
