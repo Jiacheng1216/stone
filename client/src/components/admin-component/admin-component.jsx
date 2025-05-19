@@ -66,7 +66,10 @@ const AdminComponent = () => {
   //處理提交
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (visibleUploadProgress) return; // ⛔ 阻止重複提交
+    if (selectedFiles.length === 0) {
+      alert("請選取圖片");
+      return;
+    }
 
     try {
       setVisibleUploadProgress(true);
@@ -163,6 +166,18 @@ const AdminComponent = () => {
     setCurrentIndex(index);
   };
 
+  //移除選取中的圖片（從預覽移除）
+  const handleRemovePreview = (index) => {
+    const newFiles = [...selectedFiles];
+    const newPreviews = [...previewUrls];
+
+    newFiles.splice(index, 1);
+    newPreviews.splice(index, 1);
+
+    setSelectedFiles(newFiles);
+    setPreviewUrls(newPreviews);
+  };
+
   return (
     <div>
       <NavbarComponent />
@@ -177,6 +192,7 @@ const AdminComponent = () => {
             value={newStone.color}
             onChange={handleInputChange}
             required
+            disabled={visibleUploadProgress}
           />
           {/* <input
           type="number"
@@ -192,7 +208,27 @@ const AdminComponent = () => {
           onChange={handleInputChange}
           required
         /> */}
-          <input type="file" multiple onChange={handleFileChange} required />
+          <label
+            htmlFor="upload-input"
+            className="custom-upload-button"
+            disabled={visibleUploadProgress}
+          >
+            選擇圖片
+          </label>
+          <input
+            id="upload-input"
+            type="file"
+            multiple
+            onChange={handleFileChange}
+            // required
+            className="hidden-input"
+            disabled={visibleUploadProgress}
+          />
+
+          {selectedFiles.length > 0 && (
+            <p>你已選擇 {selectedFiles.length} 張圖片</p>
+          )}
+
           <button type="submit" disabled={visibleUploadProgress}>
             上傳
           </button>
@@ -221,25 +257,35 @@ const AdminComponent = () => {
             <div className="preview-container">
               <p>圖片預覽：</p>
               {previewUrls.map((url, idx) => (
-                <img
-                  key={idx}
-                  src={url}
-                  alt={`預覽${idx}`}
-                  className="preview-img"
-                />
+                <div key={idx} className="preview-wrapper">
+                  <img src={url} alt={`預覽${idx}`} className="preview-img" />
+                  <button
+                    type="button"
+                    className="remove-preview-btn"
+                    onClick={() => handleRemovePreview(idx)}
+                    disabled={visibleUploadProgress}
+                  >
+                    X
+                  </button>
+                </div>
               ))}
             </div>
           )}
         </form>
 
         <h2>現有大理石</h2>
-        <button className="bulk-delete-btn" onClick={handleBulkDelete}>
+        <button
+          className="bulk-delete-btn"
+          onClick={handleBulkDelete}
+          disabled={visibleDeleteProgress}
+        >
           刪除選取的圖片 ({selectedIds.length})
         </button>
         {selectedIds.length > 0 && (
           <button
             className="clear-selection-btn"
             onClick={() => setSelectedIds([])}
+            disabled={visibleDeleteProgress}
           >
             取消所有勾選
           </button>

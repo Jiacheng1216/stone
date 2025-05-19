@@ -62,10 +62,14 @@ h2 {
   margin: 4px 0;
 }
 
-.preview-container {
-  margin-top: 10px;
+/* 圖片與 X 按鈕的包裝容器 */
+.preview-wrapper {
+  position: relative;
+  display: inline-block;
+  margin: 4px;
 }
 
+/* 預覽圖片本體 */
 .preview-img {
   max-width: 200px;
   max-height: 200px;
@@ -74,6 +78,31 @@ h2 {
   padding: 6px;
   background-color: #f5f5f5;
   border-radius: 6px;
+  display: block;
+}
+
+/* X 按鈕 */
+.remove-preview-btn {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  /* background-color: #ff4d4f;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 22px;
+  height: 22px;
+  font-size: 16px;
+  line-height: 22px;
+  text-align: center;
+  cursor: pointer;
+  z-index: 10;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.3);
+  transition: background-color 0.2s; */
+}
+
+.remove-preview-btn:hover {
+  background-color: #d9363e;
 }
 
 .upload-progress {
@@ -124,4 +153,29 @@ h2 {
 button[disabled] {
   opacity: 0.5;
   cursor: not-allowed;
+}
+
+label[disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.hidden-input {
+  display: none;
+}
+
+.custom-upload-button {
+  display: inline-block;
+  background-color: #333;
+  color: white;
+  padding: 10px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s;
+  width: 100px;
+}
+
+.custom-upload-button:hover {
+  background-color: #555;
 }
