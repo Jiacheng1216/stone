@@ -174,6 +174,7 @@ const AdminComponent = () => {
             type="text"
             name="color"
             placeholder="顏色"
+            value={newStone.color}
             onChange={handleInputChange}
             required
           />
