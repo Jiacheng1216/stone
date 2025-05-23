@@ -10,7 +10,6 @@ const NavbarComponent = () => {
           <img
             src="/images/shiningstonelogo.png" // 把這裡換成你的 logo 路徑
             alt="商穎石材 logo"
-            className="logo-image"
           />
           商穎石材線上展示間
         </Link>

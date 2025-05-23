@@ -64,17 +64,6 @@ h2 {
   margin: 4px;
 }
 
-.preview-img {
-  max-width: 200px;
-  max-height: 200px;
-  object-fit: contain;
-  border: 1px solid #ccc;
-  padding: 6px;
-  background-color: #f5f5f5;
-  border-radius: 6px;
-  display: block;
-}
-
 .remove-preview-btn {
   position: absolute;
   top: -4px;
