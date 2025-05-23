@@ -11,7 +11,8 @@ class ItemService {
     imagePath,
     imagePublicId,
     isPaper,
-    firstLastNumbers
+    firstLastNumbers,
+    fileName
   ) {
     // let token;
     // if (localStorage.getItem("user")) {
@@ -30,6 +31,7 @@ class ItemService {
         imagePublicId,
         isPaper,
         firstLastNumbers,
+        fileName,
       }
       // {
       //   headers: {

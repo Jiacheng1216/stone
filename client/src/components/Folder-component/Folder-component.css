@@ -45,7 +45,7 @@
   object-fit: contain;
 }
 
-.stone-color {
+.stone-fileName {
   font-size: 18px;
 }
 
@@ -118,4 +118,10 @@
 
 .download-img-text {
   font-size: 20px;
+}
+
+.folder-color-text {
+  text-align: center;
+  font-weight: bold;
+  font-size: 18px;
 }

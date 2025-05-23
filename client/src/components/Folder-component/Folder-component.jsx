@@ -52,6 +52,7 @@ const FolderComponent = () => {
   return (
     <div>
       <NavbarComponent />
+      <p className="folder-color-text">{color}</p>
       <div className="folder-content">
         <div className="folder-content-download"></div>
         <div className="folder-content-items">
@@ -69,7 +70,7 @@ const FolderComponent = () => {
                     alt={stone.color}
                     width="100"
                   />
-                  <p className="stone-color">{stone.color}</p>
+                  <p className="stone-fileName">{stone.fileName}</p>
                 </div>
               ))
             ) : (

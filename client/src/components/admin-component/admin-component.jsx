@@ -90,6 +90,7 @@ const AdminComponent = () => {
 
         const imagePath = photoRes.data.imagePath;
         const imagePublicId = photoRes.data.imagePublicId;
+        const fileName = photoRes.data.fileName.replace(/\.[^/.]+$/, "");
 
         const { color, width, height, isPaper, firstLastNumbers } = newStone;
 
@@ -101,7 +102,8 @@ const AdminComponent = () => {
           imagePath,
           imagePublicId,
           isPaper,
-          firstLastNumbers
+          firstLastNumbers,
+          fileName
         );
 
         // 更新總進度（例如3張：33%、66%、100%）
@@ -346,6 +348,7 @@ const AdminComponent = () => {
                   >
                     X
                   </button>
+                  <p>{selectedFiles[idx]?.name}</p>
                 </div>
               ))}
             </div>
