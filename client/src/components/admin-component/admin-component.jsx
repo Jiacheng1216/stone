@@ -239,10 +239,6 @@ const AdminComponent = () => {
             disabled={visibleUploadProgress}
           />
 
-          {selectedFiles.length > 0 && (
-            <p>你已選擇 {selectedFiles.length} 張圖片</p>
-          )}
-
           <button type="submit" disabled={visibleUploadProgress}>
             上傳
           </button>
@@ -269,6 +265,11 @@ const AdminComponent = () => {
 
           {previewUrls.length > 0 && (
             <div className="preview-container">
+              {selectedFiles.length > 0 && (
+                <p className="preview-text">
+                  你已選擇 {selectedFiles.length} 張圖片
+                </p>
+              )}
               <p>圖片預覽：</p>
               {previewUrls.map((url, idx) => (
                 <div key={idx} className="preview-wrapper">

@@ -58,6 +58,10 @@ h2 {
 }
 
 /* ====== 圖片預覽 ====== */
+.preview-container .preview-text{
+  margin-bottom: 10px;
+}
+
 .preview-wrapper {
   position: relative;
   display: inline-block;
