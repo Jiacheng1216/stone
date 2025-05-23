@@ -64,10 +64,9 @@ const HomeComponent = () => {
                 stone.firstLastNumbers === "頭號" ||
                 stone.firstLastNumbers === "尾號"
             );
-            const latestStone = stones.sort(
-              (a, b) =>
-                new Date(b.date) - new Date(a.date) && a.isPaper < b.isPaper
-            )[0];
+            const latestStone = stones
+              .filter((stone) => !stone.isPaper) // 過濾掉 isPaper 為 true 的
+              .sort((a, b) => new Date(b.date) - new Date(a.date))[0]; // 找最新的
 
             return (
               <Link to={`/folder/${color}`} key={color} className="folder-card">
