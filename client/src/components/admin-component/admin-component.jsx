@@ -216,12 +216,12 @@ const AdminComponent = () => {
       <NavbarComponent />
 
       <div className="admin-container">
-        <h2>上傳新大理石</h2>
+        <h2>上傳新圖片到資料夾</h2>
         <form className="upload-form" onSubmit={handleSubmit}>
           <input
             type="text"
             name="color"
-            placeholder="顏色"
+            placeholder="資料夾名稱(顏色)"
             value={newStone.color}
             onChange={handleInputChange}
             required
