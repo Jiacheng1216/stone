@@ -5,6 +5,7 @@ const FooterComponent = () => {
   return (
     <div className="footer">
       <p>© 商穎石材有限公司</p>
+      <p>地址：新北市八里區中華路一段158號</p>
       <div className="social-links">
         <a
           href="https://www.facebook.com/shangyingstone"
