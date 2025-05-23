@@ -4,7 +4,6 @@ import ItemService from "../../services/item.service";
 import "./Folder-component.css";
 import NavbarComponent from "../navbar-component/NavbarComponent";
 import FooterComponent from "../footer-component/FooterComponent";
-import { ip } from "../../config";
 
 const FolderComponent = () => {
   const { color } = useParams(); // 從 URL 取得顏色

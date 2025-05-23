@@ -4,8 +4,16 @@ const API_URL = `${ip}/api/item`;
 
 class ItemService {
   //上傳商品
-  post(color, height, width, imagePath,imagePublicId) {
-    let token;
+  post(
+    color,
+    height,
+    width,
+    imagePath,
+    imagePublicId,
+    isPaper,
+    firstLastNumbers
+  ) {
+    // let token;
     // if (localStorage.getItem("user")) {
     //   token = JSON.parse(localStorage.getItem("user")).token;
     // } else {
@@ -14,7 +22,15 @@ class ItemService {
 
     return axios.post(
       API_URL,
-      { color, height, width, imagePath,imagePublicId }
+      {
+        color,
+        height,
+        width,
+        imagePath,
+        imagePublicId,
+        isPaper,
+        firstLastNumbers,
+      }
       // {
       //   headers: {
       //     Authorization: token,

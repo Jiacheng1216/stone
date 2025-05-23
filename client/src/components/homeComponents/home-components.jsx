@@ -57,7 +57,14 @@ const HomeComponent = () => {
 
         <div className="folder-list">
           {filteredGrouped.map(([color, stones]) => {
-            const stoneCount = stones.length;
+            const paperCount = stones.filter((stone) => stone.isPaper).length; //檢尺單的數量
+            const stoneCount = stones.length - paperCount; //石頭總數
+            const firstLastNumbers = stones.filter(
+              (stone) =>
+                stone.firstLastNumbers === "頭號" ||
+                stone.firstLastNumbers === "尾號"
+            );
+            console.log(firstLastNumbers);
             const latestStone = stones.sort(
               (a, b) => new Date(b.date) - new Date(a.date)
             )[0];
@@ -73,7 +80,13 @@ const HomeComponent = () => {
                 </div>
                 <div className="folder-info">
                   <p className="folder-color">{color}</p>
-                  <p className="folder-count">現貨片數: {stoneCount}</p>
+
+                  <div className="folder-row">
+                    <p className="folder-count">現貨片數: {stoneCount}</p>
+                    <p className="folder-firstLastNumbers">
+                      {firstLastNumbers[0]?.firstLastNumbers || ""}
+                    </p>
+                  </div>
                 </div>
               </Link>
             );

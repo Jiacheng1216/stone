@@ -58,7 +58,7 @@ h2 {
 }
 
 /* ====== 圖片預覽 ====== */
-.preview-container .preview-text{
+.preview-container .preview-text {
   margin-bottom: 10px;
 }
 
@@ -162,7 +162,12 @@ h2 {
 
 /* ====== 禁用狀態樣式 ====== */
 button[disabled],
-label[disabled]{
+label[disabled] {
   opacity: 0.5;
   cursor: not-allowed;
+}
+
+/* ====== checkbox ====== */
+.checkbox-container label {
+  margin-right: 6px;
 }

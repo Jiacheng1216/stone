@@ -7,11 +7,15 @@ import NavbarComponent from "../navbar-component/NavbarComponent";
 const AdminComponent = () => {
   const navigate = useNavigate(); // 替代 useHistory
   const [stones, setStones] = useState([]);
+
+  //處理輸入的資料
   const [newStone, setNewStone] = useState({
     color: "",
     width: "",
     height: "",
     image: null,
+    isPaper: false, //檢尺單
+    firstLastNumbers: "", //頭號或尾號
   });
 
   //選擇檔案 上傳圖片
@@ -87,17 +91,32 @@ const AdminComponent = () => {
         const imagePath = photoRes.data.imagePath;
         const imagePublicId = photoRes.data.imagePublicId;
 
-        const { color, width, height } = newStone;
+        const { color, width, height, isPaper, firstLastNumbers } = newStone;
 
         // 上傳商品資料
-        await itemService.post(color, height, width, imagePath, imagePublicId);
+        await itemService.post(
+          color,
+          height,
+          width,
+          imagePath,
+          imagePublicId,
+          isPaper,
+          firstLastNumbers
+        );
 
         // 更新總進度（例如3張：33%、66%、100%）
         updateProgress(i, selectedFiles.length);
       }
 
       // 清空表單並重新抓資料
-      setNewStone({ color: "", width: "", height: "", image: null });
+      setNewStone({
+        color: "",
+        width: "",
+        height: "",
+        image: null,
+        isPaper: false,
+        firstLastNumbers: "",
+      });
       setSelectedFiles([]);
       setPreviewUrls([]);
       setProgress(0);
@@ -208,6 +227,51 @@ const AdminComponent = () => {
             required
             disabled={visibleUploadProgress}
           />
+
+          <div className="checkbox-container">
+            <label>
+              <input
+                type="checkbox"
+                checked={newStone.isPaper}
+                onChange={(e) =>
+                  setNewStone({ ...newStone, isPaper: e.target.checked })
+                }
+                disabled={visibleUploadProgress}
+              />
+              <span>檢尺單</span>
+            </label>
+
+            <label>
+              <input
+                type="checkbox"
+                checked={newStone.firstLastNumbers === "頭號"}
+                onChange={(e) =>
+                  setNewStone({
+                    ...newStone,
+                    firstLastNumbers: e.target.checked ? "頭號" : "",
+                  })
+                }
+                disabled={visibleUploadProgress}
+              />
+              <span>頭號</span>
+            </label>
+
+            <label>
+              <input
+                type="checkbox"
+                checked={newStone.firstLastNumbers === "尾號"}
+                onChange={(e) =>
+                  setNewStone({
+                    ...newStone,
+                    firstLastNumbers: e.target.checked ? "尾號" : "",
+                  })
+                }
+                disabled={visibleUploadProgress}
+              />
+              <span>尾號</span>
+            </label>
+          </div>
+
           {/* <input
           type="number"
           name="width"
