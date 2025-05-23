@@ -72,8 +72,8 @@ const HomeComponent = () => {
               <Link to={`/folder/${color}`} key={color} className="folder-card">
                 <div className="folder-image-container">
                   <img
-                    src={latestStone.imagePath}
-                    alt={`${color} marble`}
+                    src={latestStone?.imagePath}
+                    alt={`${color}`}
                     className="preview-img"
                   />
                 </div>
