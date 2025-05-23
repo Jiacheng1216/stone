@@ -64,9 +64,9 @@ const HomeComponent = () => {
                 stone.firstLastNumbers === "頭號" ||
                 stone.firstLastNumbers === "尾號"
             );
-            console.log(firstLastNumbers);
             const latestStone = stones.sort(
-              (a, b) => new Date(b.date) - new Date(a.date)
+              (a, b) =>
+                new Date(b.date) - new Date(a.date) && a.isPaper < b.isPaper
             )[0];
 
             return (
