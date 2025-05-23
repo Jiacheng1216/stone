@@ -66,7 +66,7 @@ const HomeComponent = () => {
             );
             const latestStone = stones
               .filter((stone) => !stone.isPaper) // 過濾掉 isPaper 為 true 的
-              .sort((a, b) => new Date(b.date) - new Date(a.date))[0]; // 找最新的
+              .sort((a, b) => new Date(a.date) - new Date(b.date))[0]; // 找最新的
 
             return (
               <Link to={`/folder/${color}`} key={color} className="folder-card">
