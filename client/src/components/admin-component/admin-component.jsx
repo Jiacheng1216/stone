@@ -203,9 +203,9 @@ const AdminComponent = () => {
   };
 
   //過濾搜尋欄搜尋的石頭
-  const filteredStones = stones.filter((stone) =>
-    stone.color.toLowerCase().includes(search.toLowerCase())
-  );
+  const filteredStones = stones
+    .filter((stone) => stone.color.toLowerCase().includes(search.toLowerCase()))
+    .sort((a, b) => new Date(b.date) - new Date(a.date));
 
   //全部勾選
   const handleSelectAll = () => {
@@ -355,7 +355,7 @@ const AdminComponent = () => {
           )}
         </form>
 
-        <h2>現有大理石</h2>
+        <h2>現有圖片</h2>
 
         <button
           className="bulk-delete-btn"
