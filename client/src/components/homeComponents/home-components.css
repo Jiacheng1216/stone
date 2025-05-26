@@ -49,6 +49,9 @@
 
 /* 可以點擊並且有連結的資料夾最外層 */
 .folder-card {
+  display: flex;
+  flex-direction: column; /* 垂直排列 */
+  justify-content: flex-start;
   width: 220px;
   background-color: #fff;
   border-radius: 12px;
@@ -84,17 +87,26 @@
   display: block;
 }
 
+/* 顏色和現貨片數、頭尾號的大容器 */
+.folder-info {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
 .folder-color {
   font-weight: bold;
   font-size: 18px;
+  word-break: break-word; /* 防止太長溢出 */
 }
 
 /* 現貨片數 頭尾號的容器 */
 .folder-row {
   display: flex;
   align-items: center;
-  margin-top: 5px;
   justify-content: space-between;
+  margin-top: auto; /* 👈 這個會把它推到底部 */
+  padding-top: 12px; /* 👈 增加與上方內容的距離 */
 }
 
 .folder-count {
