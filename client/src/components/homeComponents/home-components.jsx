@@ -32,10 +32,18 @@ const HomeComponent = () => {
     setGroupedStones(grouped);
   };
 
-  // 搜尋欄輸入後過濾的邏輯
-  const filteredGrouped = Object.entries(groupedStones).filter(([color]) =>
-    color.toLowerCase().includes(search.toLowerCase())
-  );
+  // 搜尋欄輸入後過濾的邏輯，並照上傳時間排序
+  const filteredGrouped = Object.entries(groupedStones)
+    .filter(([color]) => color.toLowerCase().includes(search.toLowerCase()))
+    .sort(([, stonesA], [, stonesB]) => {
+      const latestA = Math.max(
+        ...stonesA.map((stone) => new Date(stone.date).getTime())
+      );
+      const latestB = Math.max(
+        ...stonesB.map((stone) => new Date(stone.date).getTime())
+      );
+      return latestB - latestA; // 最新排最前面
+    });
 
   return (
     <main>
