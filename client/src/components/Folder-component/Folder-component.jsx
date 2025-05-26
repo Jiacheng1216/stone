@@ -42,7 +42,7 @@ const FolderComponent = () => {
 
   const fetchColorItems = async () => {
     try {
-      const response = await ItemService.getByColor(color);
+      const response = await ItemService.getByColor(encodeURIComponent(color));
       setStones(response.data);
     } catch (e) {
       console.log(e);

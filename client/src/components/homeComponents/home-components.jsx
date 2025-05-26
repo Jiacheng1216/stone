@@ -22,6 +22,7 @@ const HomeComponent = () => {
     }
   };
 
+  // 顏色分組邏輯
   const groupByColor = (items) => {
     const grouped = items.reduce((acc, item) => {
       if (!acc[item.color]) acc[item.color] = [];
@@ -31,6 +32,7 @@ const HomeComponent = () => {
     setGroupedStones(grouped);
   };
 
+  // 搜尋欄輸入後過濾的邏輯
   const filteredGrouped = Object.entries(groupedStones).filter(([color]) =>
     color.toLowerCase().includes(search.toLowerCase())
   );
@@ -70,7 +72,11 @@ const HomeComponent = () => {
               .sort((a, b) => new Date(a.date) - new Date(b.date))[0]; // 找最新的
 
             return (
-              <Link to={`/folder/${color}`} key={color} className="folder-card">
+              <Link
+                to={`/folder/${encodeURIComponent(color)}`}
+                key={color}
+                className="folder-card"
+              >
                 <div className="folder-image-container">
                   <img
                     src={latestStone?.imagePath}

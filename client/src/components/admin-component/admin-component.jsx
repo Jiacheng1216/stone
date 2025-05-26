@@ -223,7 +223,7 @@ const AdminComponent = () => {
           <input
             type="text"
             name="color"
-            placeholder="資料夾名稱(顏色)(備註:不要打#)"
+            placeholder="資料夾名稱(顏色)"
             value={newStone.color}
             onChange={handleInputChange}
             required
