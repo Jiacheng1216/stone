@@ -4,7 +4,8 @@ import ItemService from "../../services/item.service";
 import "./Folder-component.css";
 import NavbarComponent from "../navbar-component/NavbarComponent";
 import FooterComponent from "../footer-component/FooterComponent";
-import { ip } from "../../config";
+import JSZip from "jszip";
+import { saveAs } from "file-saver";
 
 const FolderComponent = () => {
   const { color } = useParams(); // 從 URL 取得顏色
@@ -43,18 +44,58 @@ const FolderComponent = () => {
 
   const fetchColorItems = async () => {
     try {
-      const response = await ItemService.getByColor(color);
+      const response = await ItemService.getByColor(encodeURIComponent(color));
       setStones(response.data);
     } catch (e) {
       console.log(e);
     }
   };
 
+  // 一鍵下載所有圖片
+  const downloadAllImages = async () => {
+    const zip = new JSZip();
+    const imgFolder = zip.folder("stones");
+
+    for (let i = 0; i < stones.length; i++) {
+      const stone = stones[i];
+      try {
+        const response = await fetch(stone.imagePath, { mode: "cors" });
+
+        // 檢查是否為圖片類型
+        const contentType = response.headers.get("content-type");
+        if (!response.ok || !contentType.startsWith("image/")) {
+          console.warn(`跳過非圖片或無效圖片：${stone.imagePath}`);
+          continue; // 跳過這張圖
+        }
+
+        const blob = await response.blob();
+
+        // 根據 Content-Type 推斷副檔名
+        const extension = contentType.split("/")[1].split(";")[0]; // e.g. "jpeg", "png"
+        const baseName = stone.fileName?.split(".")[0] || `stone-${i + 1}`;
+        const fileName = `${baseName}.${extension}`;
+
+        imgFolder.file(fileName, blob);
+      } catch (err) {
+        console.error(`下載圖片失敗：${stone.imagePath}`, err);
+      }
+    }
+
+    zip.generateAsync({ type: "blob" }).then((content) => {
+      saveAs(content, `${color}.zip`);
+    });
+  };
+
   return (
     <div>
       <NavbarComponent />
+      <p className="folder-color-text">{color}</p>
+      <div className="folder-content-download">
+        <button className="download-all-btn" onClick={downloadAllImages}>
+          下載全部圖片(ZIP)
+        </button>
+      </div>
       <div className="folder-content">
-        <div className="folder-content-download"></div>
         <div className="folder-content-items">
           <div className="folder-stone-container">
             {stones.length > 0 ? (
@@ -66,11 +107,11 @@ const FolderComponent = () => {
                 >
                   <img
                     className="stone-img"
-                    src={`${ip}/images/${stone.imagePath}`}
+                    src={stone.imagePath}
                     alt={stone.color}
                     width="100"
                   />
-                  <p className="stone-color">{stone.color}</p>
+                  <p className="stone-fileName">{stone.fileName}</p>
                 </div>
               ))
             ) : (
@@ -87,13 +128,13 @@ const FolderComponent = () => {
                   {/* 下載圖片超連結 */}
                   <div className="download-img-text-div">
                     <p className="modal-color">{stones[currentIndex].color}</p>
-                    <a
-                      href={`${ip}/images/${selectedImage}`}
+                    {/* <a
+                      href={selectedImage.imagePath}
                       download
                       className="download-img-text"
                     >
                       下載圖片
-                    </a>
+                    </a> */}
                   </div>
                   <button className="close-btn" onClick={closeModal}>
                     ✖
@@ -102,7 +143,7 @@ const FolderComponent = () => {
                     ←
                   </button>
                   <img
-                    src={`${ip}/images/${selectedImage}`}
+                    src={selectedImage}
                     alt="Enlarged stone"
                     className="modal-img"
                   />

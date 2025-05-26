@@ -1,3 +1,4 @@
+/* ====== 容器與整體樣式 ====== */
 .admin-container {
   max-width: 1000px;
   margin: 0 auto;
@@ -10,6 +11,7 @@ h2 {
   color: #333;
 }
 
+/* ====== 表單區塊 ====== */
 .upload-form {
   display: flex;
   flex-direction: column;
@@ -35,11 +37,77 @@ h2 {
   background-color: #555;
 }
 
+.hidden-input {
+  display: none;
+}
+
+.custom-upload-button {
+  display: inline-block;
+  background-color: #333;
+  color: white;
+  padding: 10px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s;
+  width: 100px;
+}
+
+.custom-upload-button:hover {
+  background-color: #555;
+}
+
+/* ====== 圖片預覽 ====== */
+.preview-container .preview-text {
+  margin-bottom: 10px;
+}
+
+.preview-wrapper {
+  position: relative;
+  display: inline-block;
+  margin: 4px;
+}
+
+.remove-preview-btn {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  /* 可加上背景樣式：如紅色圓形按鈕 */
+}
+
+.remove-preview-btn:hover {
+  background-color: #d9363e;
+}
+
+/* ====== 進度條 ====== */
+.upload-progress {
+  margin-top: 10px;
+  text-align: center;
+}
+
+.upload-progress p {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.upload-progress progress {
+  width: 100%;
+  height: 20px;
+}
+
+.upload-progress span {
+  display: block;
+  text-align: center;
+  margin-top: 5px;
+}
+
+/* ====== 石頭清單 ====== */
 .stone-list {
   display: flex;
   flex-wrap: wrap;
   gap: 24px;
   justify-content: flex-start;
+  margin-top: 10px;
 }
 
 .stone-item {
@@ -62,16 +130,44 @@ h2 {
   margin: 4px 0;
 }
 
-.preview-container {
-  margin-top: 10px;
+/* ====== 操作按鈕 ====== */
+.bulk-delete-btn {
+  background-color: #e74c3c;
+  color: white;
+  padding: 8px 12px;
+  border: none;
+  margin-bottom: 10px;
+  margin-right: 10px;
+  cursor: pointer;
+  border-radius: 4px;
 }
 
-.preview-img {
-  max-width: 200px;
-  max-height: 200px;
-  object-fit: contain;
+.clear-selection-btn,
+.select-all-btn {
+  background-color: #f0f0f0;
+  color: #333;
   border: 1px solid #ccc;
-  padding: 6px;
-  background-color: #f5f5f5;
-  border-radius: 6px;
+  border-radius: 4px;
+  padding: 6px 12px;
+  margin-bottom: 10px;
+  margin-right: 10px;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.clear-selection-btn:hover,
+.select-all-btn:hover {
+  background-color: #e0e0e0;
+}
+
+/* ====== 禁用狀態樣式 ====== */
+button[disabled],
+label[disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ====== checkbox ====== */
+.checkbox-container label {
+  margin-right: 6px;
 }

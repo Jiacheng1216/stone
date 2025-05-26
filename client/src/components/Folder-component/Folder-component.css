@@ -45,7 +45,7 @@
   object-fit: contain;
 }
 
-.stone-color {
+.stone-fileName {
   font-size: 18px;
 }
 
@@ -118,4 +118,32 @@
 
 .download-img-text {
   font-size: 20px;
+}
+
+.folder-color-text {
+  text-align: center;
+  font-weight: bold;
+  font-size: 18px;
+}
+
+/* 下載全部圖片按鈕的容器 */
+.folder-content-download{
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+/* 下載全部圖片按鈕 */
+.download-all-btn {
+  padding: 8px 16px;
+  background-color: rgb(82, 82, 82);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.download-all-btn:hover {
+  background-color: #7c7c7c;
 }

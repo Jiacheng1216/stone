@@ -10,32 +10,14 @@
   z-index: 999;
 }
 
-.navbar-logo {
-  font-size: 20px;
-  font-weight: bold;
-}
-
 .navbar-logo a {
   text-decoration: none;
+  font-size: 20px;
+  font-weight: bold;
   color: #333;
 }
 
-.navbar-links {
-  display: flex;
-  gap: 20px;
-}
-
-.navbar-links a {
-  color: #333;
-  text-decoration: none;
-  font-size: 16px;
-}
-
-.navbar-links a:hover {
-  text-decoration: underline;
-}
-
-.logo-image {
+.navbar-logo img{
   width: 60px; /* 調整 logo 圖片大小 */
   margin-right: 10px; /* 讓 logo 圖片和文字之間有點間距 */
   vertical-align: middle; /* 使圖片與文字垂直對齊 */
