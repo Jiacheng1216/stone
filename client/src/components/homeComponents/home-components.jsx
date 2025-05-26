@@ -64,6 +64,7 @@ const HomeComponent = () => {
                 stone.firstLastNumbers === "頭號" ||
                 stone.firstLastNumbers === "尾號"
             );
+            // 最新的圖片（放在預覽用）
             const latestStone = stones
               .filter((stone) => !stone.isPaper) // 過濾掉 isPaper 為 true 的
               .sort((a, b) => new Date(a.date) - new Date(b.date))[0]; // 找最新的

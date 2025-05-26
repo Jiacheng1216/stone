@@ -1,7 +1,14 @@
+/* home頁面大容器 */
 .main-container {
   max-width: 1200px;
   margin: 0 auto;
   padding: 40px 20px;
+}
+
+/* 介紹文字和搜尋欄位的容器 */
+.search-section {
+  text-align: center;
+  margin-bottom: 30px;
 }
 
 .intro-text {
@@ -13,11 +20,6 @@
   margin-left: auto;
   margin-right: auto;
   line-height: 1.6;
-}
-
-.search-section {
-  text-align: center;
-  margin-bottom: 30px;
 }
 
 .search-input {
@@ -37,6 +39,7 @@
   box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
 }
 
+/* 資料夾的大容器 */
 .folder-list {
   display: flex;
   flex-wrap: wrap;
@@ -44,6 +47,7 @@
   justify-content: center;
 }
 
+/* 可以點擊並且有連結的資料夾最外層 */
 .folder-card {
   width: 220px;
   background-color: #fff;
@@ -60,6 +64,7 @@
   transform: translateY(-5px);
 }
 
+/* 預覽圖片的容器 */
 .folder-image-container {
   position: relative;
   margin-bottom: 12px;
@@ -84,11 +89,12 @@
   font-size: 18px;
 }
 
+/* 現貨片數 頭尾號的容器 */
 .folder-row {
   display: flex;
   align-items: center;
   margin-top: 5px;
-  gap: 20px; /* 控制間距 */
+  justify-content: space-between;
 }
 
 .folder-count {
@@ -100,5 +106,4 @@
   font-size: 16px;
   font-weight: bold;
   color: #666;
-  margin-left: 50px;
 }
