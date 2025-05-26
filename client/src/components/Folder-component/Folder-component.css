@@ -125,3 +125,25 @@
   font-weight: bold;
   font-size: 18px;
 }
+
+/* 下載全部圖片按鈕的容器 */
+.folder-content-download{
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+/* 下載全部圖片按鈕 */
+.download-all-btn {
+  padding: 8px 16px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.download-all-btn:hover {
+  background-color: #45a049;
+}
