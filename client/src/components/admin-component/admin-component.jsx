@@ -447,10 +447,13 @@ const AdminComponent = () => {
               <p
                 className="back-folder-btn"
                 onClick={(e) => {
-                  setSearch("");
-                  setShowFolders(true);
-                  setSelectedIds([]);
+                  if (!deleteState) {
+                    setSearch("");
+                    setShowFolders(true);
+                    setSelectedIds([]);
+                  }
                 }}
+                disabled={deleteState}
               >
                 ⬑返回資料夾
               </p>
@@ -467,8 +470,16 @@ const AdminComponent = () => {
                   <input
                     type="checkbox"
                     checked={selectedIds.includes(stone._id)}
-                    onChange={() => handleSelect(stone._id)}
-                    onClick={(e) => e.stopPropagation()} // 避免點 checkbox 也觸發整個卡片的 onClick
+                    onChange={() => {
+                      if (!deleteState) {
+                        handleSelect(stone._id);
+                      }
+                    }}
+                    onClick={(e) => {
+                      if (!deleteState) {
+                        e.stopPropagation();
+                      }
+                    }} // 避免點 checkbox 也觸發整個卡片的 onClick
                     disabled={deleteState}
                   />
                   <img src={stone.imagePath} alt={stone.color} />

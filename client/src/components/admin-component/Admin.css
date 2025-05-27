@@ -166,6 +166,10 @@ label[disabled] {
   opacity: 0.5;
   cursor: not-allowed;
 }
+p[disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
 
 /* ====== checkbox ====== */
 .checkbox-container label {
