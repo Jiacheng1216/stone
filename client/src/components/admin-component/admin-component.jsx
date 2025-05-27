@@ -13,6 +13,7 @@ const AdminComponent = () => {
     color: "",
     width: "",
     height: "",
+    stoneOrigin: "",
     image: null,
     isPaper: false, //檢尺單
     firstLastNumbers: "", //頭號或尾號
@@ -91,6 +92,7 @@ const AdminComponent = () => {
       formData.append("color", newStone.color);
       formData.append("width", newStone.width);
       formData.append("height", newStone.height);
+      formData.append("stoneOrigin", newStone.stoneOrigin);
       formData.append("isPaper", newStone.isPaper);
       formData.append("firstLastNumbers", newStone.firstLastNumbers);
 
@@ -109,6 +111,7 @@ const AdminComponent = () => {
         color: "",
         width: "",
         height: "",
+        stoneOrigin: "",
         image: null,
         isPaper: false,
         firstLastNumbers: "",
@@ -207,6 +210,14 @@ const AdminComponent = () => {
             value={newStone.color}
             onChange={handleInputChange}
             required
+            disabled={visibleUploadProgress}
+          />
+          <input
+            type="text"
+            name="stoneOrigin"
+            placeholder="產地"
+            value={newStone.stoneOrigin}
+            onChange={handleInputChange}
             disabled={visibleUploadProgress}
           />
 

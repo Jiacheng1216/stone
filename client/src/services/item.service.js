@@ -12,7 +12,8 @@ class ItemService {
     imagePublicId,
     isPaper,
     firstLastNumbers,
-    fileName
+    fileName,
+    stoneOrigin
   ) {
     // let token;
     // if (localStorage.getItem("user")) {
@@ -32,6 +33,7 @@ class ItemService {
         isPaper,
         firstLastNumbers,
         fileName,
+        stoneOrigin,
       }
       // {
       //   headers: {
