@@ -233,7 +233,7 @@
 
 /* 篩選出含..的圖片文字 */
 .filter-text {
-  margin-bottom: "16px";
+  margin-bottom: 16px;
   font-weight: bold;
   color: #444;
   text-align: center;
