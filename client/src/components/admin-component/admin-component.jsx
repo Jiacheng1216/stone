@@ -73,6 +73,7 @@ const AdminComponent = () => {
   //處理提交
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     if (selectedFiles.length === 0) {
       alert("請選取圖片");
       return;
@@ -80,37 +81,29 @@ const AdminComponent = () => {
 
     try {
       setVisibleUploadProgress(true);
-      for (let i = 0; i < selectedFiles.length; i++) {
-        const file = selectedFiles[i];
-        const formData = new FormData();
-        formData.append("photo", file);
 
-        // 圖片上傳
-        const photoRes = await itemService.postPhoto(formData);
+      const formData = new FormData();
+      selectedFiles.forEach((file) => {
+        formData.append("images", file); // 注意 field name 是 "images"
+      });
 
-        const imagePath = photoRes.data.imagePath;
-        const imagePublicId = photoRes.data.imagePublicId;
-        const fileName = photoRes.data.fileName.replace(/\.[^/.]+$/, "");
+      formData.append("color", newStone.color);
+      formData.append("width", newStone.width);
+      formData.append("height", newStone.height);
+      formData.append("isPaper", newStone.isPaper);
+      formData.append("firstLastNumbers", newStone.firstLastNumbers);
 
-        const { color, width, height, isPaper, firstLastNumbers } = newStone;
-
-        // 上傳商品資料
-        await itemService.post(
-          color,
-          height,
-          width,
-          imagePath,
-          imagePublicId,
-          isPaper,
-          firstLastNumbers,
-          fileName
+      await itemService.uploadMultiple(formData, (progressEvent) => {
+        const percentCompleted = Math.min(
+          99,
+          Math.round((progressEvent.loaded * 100) / progressEvent.total)
         );
+        setProgress(percentCompleted);
+      });
 
-        // 更新總進度（例如3張：33%、66%、100%）
-        updateProgress(i, selectedFiles.length);
-      }
+      alert("上傳成功！");
 
-      // 清空表單並重新抓資料
+      // 清空表單
       setNewStone({
         color: "",
         width: "",
@@ -123,8 +116,6 @@ const AdminComponent = () => {
       setPreviewUrls([]);
       setProgress(0);
       setVisibleUploadProgress(false);
-      setCurrentIndex(0);
-      alert("上傳成功！");
       fetchStones();
     } catch (error) {
       console.error("上傳失敗", error);
@@ -311,9 +302,7 @@ const AdminComponent = () => {
 
           {visibleUploadProgress && (
             <div className="upload-progress">
-              <p>
-                上傳第 {currentIndex + 1} 張，共 {selectedFiles.length} 張...
-              </p>
+              <p>上傳照片中，共 {selectedFiles.length} 張...</p>
               <progress value={progress} max="100" />
               <span>{progress}%</span>
             </div>

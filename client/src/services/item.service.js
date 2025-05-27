@@ -79,6 +79,15 @@ class ItemService {
       imagePath,
     });
   }
+
+  uploadMultiple(formData, onUploadProgress) {
+    return axios.post(`${API_URL}/upload-multiple`, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+      onUploadProgress,
+    });
+  }
 }
 
 export default new ItemService();
