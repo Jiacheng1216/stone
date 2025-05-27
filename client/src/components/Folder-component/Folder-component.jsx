@@ -90,11 +90,13 @@ const FolderComponent = () => {
     <div>
       <NavbarComponent />
       <p className="folder-color-text">{color}</p>
+
       <div className="folder-content-download">
         <button className="download-all-btn" onClick={downloadAllImages}>
           下載全部圖片(ZIP)
         </button>
       </div>
+
       <div className="folder-content">
         <div className="folder-content-items">
           <div className="folder-stone-container">
