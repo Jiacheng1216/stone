@@ -469,7 +469,7 @@ const AdminComponent = () => {
                     disabled={deleteState}
                   />
                   <img src={stone.imagePath} alt={stone.color} />
-                  <p>{stone.color}</p>
+                  <p>{stone.fileName}</p>
                 </div>
               ))}
             </div>
