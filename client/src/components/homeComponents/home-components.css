@@ -61,6 +61,7 @@
   text-decoration: none;
   color: #333;
   transition: transform 0.2s ease;
+  cursor: pointer;
 }
 
 .folder-card:hover {

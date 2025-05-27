@@ -6,6 +6,8 @@ import NavbarComponent from "../navbar-component/NavbarComponent";
 
 const AdminComponent = () => {
   const navigate = useNavigate(); // 替代 useHistory
+  const [showFolders, setShowFolders] = useState(true); //資料夾模式或圖片模式
+  const [groupedStones, setGroupedStones] = useState({});
   const [stones, setStones] = useState([]);
 
   //處理輸入的資料
@@ -52,6 +54,7 @@ const AdminComponent = () => {
     try {
       const response = await itemService.get();
       setStones(response.data);
+      groupByColor(response.data);
     } catch (error) {
       console.error("取得石頭資料失敗", error);
     }
@@ -127,20 +130,6 @@ const AdminComponent = () => {
     }
   };
 
-  // //處理刪除
-  // const handleDelete = async (id) => {
-  //   if (window.confirm("確定要刪除這塊大理石嗎？")) {
-  //     try {
-  //       await itemService.deleteItem(id);
-  //       fetchStones();
-  //       alert("刪除成功！");
-  //     } catch (error) {
-  //       console.error("刪除失敗", error);
-  //       alert("刪除失敗，請稍後再試");
-  //     }
-  //   }
-  // };
-
   //處理選取
   const handleSelect = (id) => {
     setSelectedIds((prevSelected) =>
@@ -194,6 +183,35 @@ const AdminComponent = () => {
   const handleSelectAll = () => {
     const allIds = filteredStones.map((stone) => stone._id);
     setSelectedIds(allIds);
+  };
+
+  // 顏色分組邏輯
+  const groupByColor = (items) => {
+    const grouped = items.reduce((acc, item) => {
+      if (!acc[item.color]) acc[item.color] = [];
+      acc[item.color].push(item);
+      return acc;
+    }, {});
+    setGroupedStones(grouped);
+  };
+
+  // 搜尋欄輸入後過濾的邏輯，並照上傳時間排序
+  const filteredGrouped = Object.entries(groupedStones)
+    .filter(([color]) => color.toLowerCase().includes(search.toLowerCase()))
+    .sort(([, stonesA], [, stonesB]) => {
+      const latestA = Math.max(
+        ...stonesA.map((stone) => new Date(stone.date).getTime())
+      );
+      const latestB = Math.max(
+        ...stonesB.map((stone) => new Date(stone.date).getTime())
+      );
+      return latestB - latestA; // 最新排最前面
+    });
+
+  // 點擊資料夾的邏輯
+  const handleFolderClick = (color) => {
+    setSearch(color);
+    setShowFolders(false);
   };
 
   return (
@@ -372,35 +390,91 @@ const AdminComponent = () => {
           type="text"
           placeholder="搜尋顏色..."
           value={search}
-          onChange={(e) => setSearch(e.target.value)}
+          onChange={(e) => {
+            setSearch(e.target.value);
+            setShowFolders(e.target.value === "");
+          }}
           className="search-input"
         />
 
-        <div className="stone-list">
-          {filteredStones.map((stone) => (
-            <div
-              key={stone._id}
-              className="stone-item"
-              onClick={() => handleSelect(stone._id)}
-              disabled={deleteState}
+        {showFolders ? (
+          // 資料夾模式
+          <div className="admin-folder-list">
+            {filteredGrouped.map(([color, stones]) => {
+              const stoneCount = stones.length; //圖片總數
+              const firstLastNumbers = stones.filter(
+                (stone) =>
+                  stone.firstLastNumbers === "頭號" ||
+                  stone.firstLastNumbers === "尾號"
+              );
+              // 最新的圖片（放在預覽用）
+              const latestStone = stones
+                .filter((stone) => !stone.isPaper) // 過濾掉 isPaper 為 true 的
+                .sort((a, b) => new Date(a.date) - new Date(b.date))[0]; // 找最新的
+
+              return (
+                <div
+                  className="folder-card"
+                  onClick={() => {
+                    handleFolderClick(color);
+                  }}
+                >
+                  <div className="folder-image-container">
+                    <img
+                      src={latestStone?.imagePath}
+                      alt={`${color}`}
+                      className="preview-img"
+                    />
+                  </div>
+                  <div className="folder-info">
+                    <p className="folder-color">{color}</p>
+
+                    <div className="folder-row">
+                      <p className="folder-count">圖片總數: {stoneCount}</p>
+                      <p className="folder-firstLastNumbers">
+                        {firstLastNumbers[0]?.firstLastNumbers || ""}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        ) : (
+          // 圖片模式
+          <div>
+            <p
+              className="back-folder-btn"
+              onClick={(e) => {
+                setSearch("");
+                setShowFolders(true);
+                setSelectedIds([]);
+              }}
             >
-              <input
-                type="checkbox"
-                checked={selectedIds.includes(stone._id)}
-                onChange={() => handleSelect(stone._id)}
-                onClick={(e) => e.stopPropagation()} // 避免點 checkbox 也觸發整個卡片的 onClick
-                disabled={deleteState}
-              />
-              <img src={stone.imagePath} alt={stone.color} />
-              <p>{stone.color}</p>
-              {/* 寬和高的 */}
-              {/* <p>
-              {stone.width} × {stone.height}
-            </p> */}
-              {/* <button onClick={() => handleDelete(stone._id)}>刪除</button> */}
+              ⬑返回資料夾
+            </p>
+            <div className="stone-list">
+              {filteredStones.map((stone) => (
+                <div
+                  key={stone._id}
+                  className="stone-item"
+                  onClick={() => handleSelect(stone._id)}
+                  disabled={deleteState}
+                >
+                  <input
+                    type="checkbox"
+                    checked={selectedIds.includes(stone._id)}
+                    onChange={() => handleSelect(stone._id)}
+                    onClick={(e) => e.stopPropagation()} // 避免點 checkbox 也觸發整個卡片的 onClick
+                    disabled={deleteState}
+                  />
+                  <img src={stone.imagePath} alt={stone.color} />
+                  <p>{stone.color}</p>
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
+          </div>
+        )}
       </div>
     </div>
   );
