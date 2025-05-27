@@ -65,6 +65,14 @@ const HomeComponent = () => {
       return latestB - latestA; // 最新排最前面
     });
 
+  const filteredColors =
+    selectedColors.length > 0 ? selectedColors : search ? [search] : [];
+
+  const filterText =
+    filteredColors.length > 0
+      ? `篩選出含 ${filteredColors.join("、 ")} 的圖片`
+      : "";
+
   return (
     <main>
       <NavbarComponent />
@@ -124,6 +132,9 @@ const HomeComponent = () => {
             </div>
           </div>
         )}
+
+        {/* 篩選說明 */}
+        {filterText && <div className="filter-text">{filterText}</div>}
 
         <div className="folder-list">
           {filteredGrouped
