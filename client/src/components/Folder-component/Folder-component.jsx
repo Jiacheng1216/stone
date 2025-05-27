@@ -45,7 +45,8 @@ const FolderComponent = () => {
   const fetchColorItems = async () => {
     try {
       const response = await ItemService.getByColor(encodeURIComponent(color));
-      setStones(response.data);
+      const stones = response.data.filter((stone) => stone.isPublic);
+      setStones(stones);
     } catch (e) {
       console.log(e);
     }
