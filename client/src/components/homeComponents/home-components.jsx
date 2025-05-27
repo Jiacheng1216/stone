@@ -4,10 +4,15 @@ import itemService from "../../services/item.service";
 import { Link } from "react-router-dom";
 import NavbarComponent from "../navbar-component/NavbarComponent";
 import FooterComponent from "../footer-component/FooterComponent";
+import { ADVANCED_COLOR_OPTIONS } from "./HomeConfig";
 
 const HomeComponent = () => {
   const [groupedStones, setGroupedStones] = useState({});
   const [search, setSearch] = useState("");
+
+  // 進階搜尋
+  const [showAdvanced, setShowAdvanced] = useState(false);
+  const [selectedColors, setSelectedColors] = useState([]);
 
   useEffect(() => {
     fetchItem();
@@ -22,6 +27,13 @@ const HomeComponent = () => {
     }
   };
 
+  // 進階搜尋勾選事件
+  const toggleColorSelection = (color) => {
+    setSelectedColors((prev) =>
+      prev.includes(color) ? prev.filter((c) => c !== color) : [...prev, color]
+    );
+  };
+
   // 顏色分組邏輯
   const groupByColor = (items) => {
     const grouped = items.reduce((acc, item) => {
@@ -34,7 +46,15 @@ const HomeComponent = () => {
 
   // 搜尋欄輸入後過濾的邏輯，並照上傳時間排序
   const filteredGrouped = Object.entries(groupedStones)
-    .filter(([color]) => color.toLowerCase().includes(search.toLowerCase()))
+    .filter(([color]) => {
+      if (selectedColors.length > 0) {
+        // 有勾選時，用 OR 條件篩選包含任一勾選關鍵字
+        return selectedColors.some((selColor) => color.includes(selColor));
+      } else {
+        // 沒勾選用一般搜尋欄
+        return color.toLowerCase().includes(search.toLowerCase());
+      }
+    })
     .sort(([, stonesA], [, stonesB]) => {
       const latestA = Math.max(
         ...stonesA.map((stone) => new Date(stone.date).getTime())
@@ -49,21 +69,61 @@ const HomeComponent = () => {
     <main>
       <NavbarComponent />
       <div className="main-container">
-        <div className="search-section">
+        <div className="intro-text-section">
           <p className="intro-text">
             精心挑選採購至廠內，供客戶挑選最高品質。
             <br />
             上百種的天然大理石、花崗石、洞石及玉石等
           </p>
+        </div>
 
+        <div className="search-section">
           <input
             type="text"
             placeholder="搜尋顏色..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             className="search-input"
+            disabled={selectedColors.length > 0} // 進階搜尋開啟時鎖定搜尋欄
           />
+
+          <button
+            onClick={() => setShowAdvanced(true)}
+            className="advanced-search-btn"
+          >
+            <span className="icon">🔍</span>
+            進階搜尋
+          </button>
         </div>
+
+        {showAdvanced && (
+          <div className="modal-overlay" onClick={() => setShowAdvanced(false)}>
+            <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+              <h3>進階搜尋條件</h3>
+              <div className="checkbox-list">
+                {ADVANCED_COLOR_OPTIONS.map((color) => (
+                  <label key={color}>
+                    <input
+                      type="checkbox"
+                      checked={selectedColors.includes(color)}
+                      onChange={() => toggleColorSelection(color)}
+                    />
+                    {color}
+                  </label>
+                ))}
+              </div>
+              <button onClick={() => setShowAdvanced(false)}>確定</button>
+              <button
+                onClick={() => {
+                  setSelectedColors([]);
+                  setShowAdvanced(false);
+                }}
+              >
+                清除
+              </button>
+            </div>
+          </div>
+        )}
 
         <div className="folder-list">
           {filteredGrouped
