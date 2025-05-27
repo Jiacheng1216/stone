@@ -238,3 +238,8 @@
   color: #444;
   text-align: center;
 }
+
+input[disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
