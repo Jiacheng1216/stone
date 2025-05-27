@@ -50,7 +50,7 @@
 }
 
 /* === Modal 彈出視窗 === */
-.modal-overlay {
+.folder-modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
@@ -63,7 +63,7 @@
   z-index: 999;
 }
 
-.modal-content {
+.folder-modal-content {
   position: relative;
   background: white;
   padding: 20px;
@@ -121,7 +121,7 @@
 }
 
 /* 顏色文字的容器 */
-.folder-color-text{
+.folder-color-text {
   margin-top: 12px;
   text-align: center;
   font-weight: bold;
@@ -129,7 +129,7 @@
 }
 
 /* 下載全部圖片按鈕的容器 */
-.folder-content-download{
+.folder-content-download {
   display: flex;
   justify-content: center;
   margin-top: 10px;

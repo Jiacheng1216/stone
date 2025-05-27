@@ -128,9 +128,9 @@ const FolderComponent = () => {
 
             {/* 彈出視窗 (Modal) */}
             {selectedImage !== null && (
-              <div className="modal-overlay" onClick={closeModal}>
+              <div className="folder-modal-overlay" onClick={closeModal}>
                 <div
-                  className="modal-content"
+                  className="folder-modal-content"
                   onClick={(e) => e.stopPropagation()}
                 >
                   {/* 下載圖片超連結 */}

@@ -105,8 +105,14 @@ const HomeComponent = () => {
         </div>
 
         {showAdvanced && (
-          <div className="modal-overlay" onClick={() => setShowAdvanced(false)}>
-            <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+          <div
+            className="home-modal-overlay"
+            onClick={() => setShowAdvanced(false)}
+          >
+            <div
+              className="home-modal-content"
+              onClick={(e) => e.stopPropagation()}
+            >
               <h3>進階搜尋條件</h3>
               <div className="checkbox-list">
                 {ADVANCED_COLOR_OPTIONS.map((color) => (
