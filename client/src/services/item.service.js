@@ -61,8 +61,10 @@ class ItemService {
   // }
 
   //刪除商品
-  deleteItem(id) {
-    return axios.delete(API_URL + "/delete/" + id);
+  deleteItem(ids) {
+    return axios.delete(API_URL + "/delete/", {
+      data: { ids },
+    });
   }
 
   //查詢單一顏色商品

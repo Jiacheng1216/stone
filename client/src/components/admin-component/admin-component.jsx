@@ -27,9 +27,10 @@ const AdminComponent = () => {
 
   //進度條
   const [progress, setProgress] = useState(0);
-  const [currentIndex, setCurrentIndex] = useState(0);
   const [visibleUploadProgress, setVisibleUploadProgress] = useState(false); //上傳時顯示
-  const [visibleDeleteProgress, setVisibleDeleteProgress] = useState(false); //刪除時顯示
+
+  //刪除狀態
+  const [deleteState, setDeleteState] = useState(false); //刪除時顯示
 
   //搜尋
   const [search, setSearch] = useState("");
@@ -155,30 +156,18 @@ const AdminComponent = () => {
 
     if (window.confirm(`確定要刪除 ${selectedIds.length} 張圖片嗎？`)) {
       try {
-        setVisibleDeleteProgress(true);
-        for (let j = 0; j < selectedIds.length; j++) {
-          await itemService.deleteItem(selectedIds[j]);
-          // 更新總進度（例如3張：33%、66%、100%）
-          updateProgress(j, selectedIds.length);
-        }
+        setDeleteState(true);
+        await itemService.deleteItem(selectedIds);
+
         alert("選取的圖片刪除成功！");
         fetchStones();
         setSelectedIds([]);
-        setVisibleDeleteProgress(false);
-        setProgress(0);
-        setCurrentIndex(0);
+        setDeleteState(false);
       } catch (error) {
         console.error("批量刪除失敗", error);
         alert("刪除過程出現問題");
       }
     }
-  };
-
-  //更新進度條邏輯
-  const updateProgress = (index, total) => {
-    const percent = Math.round(((index + 1) / total) * 100);
-    setProgress(percent);
-    setCurrentIndex(index);
   };
 
   //移除選取中的圖片（從預覽移除）
@@ -308,13 +297,9 @@ const AdminComponent = () => {
             </div>
           )}
 
-          {visibleDeleteProgress && (
+          {deleteState && (
             <div className="upload-progress">
-              <p>
-                刪除第 {currentIndex + 1} 張，共 {selectedIds.length} 張...
-              </p>
-              <progress value={progress} max="100" />
-              <span>{progress}%</span>
+              <p>刪除照片中，共 {selectedIds.length} 張...</p>
             </div>
           )}
 
@@ -349,7 +334,7 @@ const AdminComponent = () => {
         <button
           className="bulk-delete-btn"
           onClick={handleBulkDelete}
-          disabled={visibleDeleteProgress}
+          disabled={deleteState}
         >
           刪除選取的圖片 ({selectedIds.length})
         </button>
@@ -357,7 +342,7 @@ const AdminComponent = () => {
         <button
           className="select-all-btn"
           onClick={handleSelectAll}
-          disabled={visibleDeleteProgress || filteredStones.length === 0}
+          disabled={deleteState || filteredStones.length === 0}
         >
           全選所有圖片
         </button>
@@ -366,7 +351,7 @@ const AdminComponent = () => {
           <button
             className="clear-selection-btn"
             onClick={() => setSelectedIds([])}
-            disabled={visibleDeleteProgress}
+            disabled={deleteState}
           >
             取消所有勾選
           </button>
@@ -386,14 +371,14 @@ const AdminComponent = () => {
               key={stone._id}
               className="stone-item"
               onClick={() => handleSelect(stone._id)}
-              disabled={visibleDeleteProgress}
+              disabled={deleteState}
             >
               <input
                 type="checkbox"
                 checked={selectedIds.includes(stone._id)}
                 onChange={() => handleSelect(stone._id)}
                 onClick={(e) => e.stopPropagation()} // 避免點 checkbox 也觸發整個卡片的 onClick
-                disabled={visibleDeleteProgress}
+                disabled={deleteState}
               />
               <img src={stone.imagePath} alt={stone.color} />
               <p>{stone.color}</p>
