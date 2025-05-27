@@ -443,16 +443,19 @@ const AdminComponent = () => {
         ) : (
           // 圖片模式
           <div>
-            <p
-              className="back-folder-btn"
-              onClick={(e) => {
-                setSearch("");
-                setShowFolders(true);
-                setSelectedIds([]);
-              }}
-            >
-              ⬑返回資料夾
-            </p>
+            <div className="back-folder-and-search-text-container">
+              <p
+                className="back-folder-btn"
+                onClick={(e) => {
+                  setSearch("");
+                  setShowFolders(true);
+                  setSelectedIds([]);
+                }}
+              >
+                ⬑返回資料夾
+              </p>
+              <p className="admin-search-text">{search}</p>
+            </div>
             <div className="stone-list">
               {filteredStones.map((stone) => (
                 <div

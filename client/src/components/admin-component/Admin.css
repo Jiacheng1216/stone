@@ -172,6 +172,12 @@ label[disabled] {
   margin-right: 6px;
 }
 
+/* 返回資料夾和顏色標題的容器 */
+.back-folder-and-search-text-container {
+  display: flex;
+  align-items: center;
+}
+
 /* 返回資料夾按鈕 */
 .back-folder-btn {
   display: inline-block;
@@ -193,6 +199,11 @@ label[disabled] {
   color: #fff;
   border-color: #333;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* 搜尋顏色文字 */
+.admin-search-text {
+  margin-left: 16px;
 }
 
 /* 資料夾大容器 */
