@@ -216,3 +216,14 @@ p[disabled] {
   flex-wrap: wrap;
   gap: 26px;
 }
+
+/* 隱藏按鈕 */
+.ispublic-set {
+  text-align: center;
+  cursor: pointer;
+}
+
+/* 卡片隱藏模式 */
+.not-public {
+  opacity: 0.5;
+}

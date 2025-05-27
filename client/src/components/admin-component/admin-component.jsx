@@ -44,6 +44,7 @@ const AdminComponent = () => {
       navigate("/login"); // 未登入則跳轉到登入頁
     } else {
       fetchStones();
+      console.log(filteredStones);
     }
   }, [navigate]);
 
@@ -212,6 +213,17 @@ const AdminComponent = () => {
   const handleFolderClick = (color) => {
     setSearch(color);
     setShowFolders(false);
+  };
+
+  // 切換圖片的isPublic狀態
+  const togglePublic = async (id, currentStatus) => {
+    try {
+      await itemService.editItem(id, { isPublic: !currentStatus });
+      fetchStones(); // 更新資料
+    } catch (error) {
+      console.error("更新公開狀態失敗", error);
+      alert("變更狀態失敗");
+    }
   };
 
   return (
@@ -461,29 +473,42 @@ const AdminComponent = () => {
             </div>
             <div className="stone-list">
               {filteredStones.map((stone) => (
-                <div
-                  key={stone._id}
-                  className="stone-item"
-                  onClick={() => handleSelect(stone._id)}
-                  disabled={deleteState}
-                >
-                  <input
-                    type="checkbox"
-                    checked={selectedIds.includes(stone._id)}
-                    onChange={() => {
-                      if (!deleteState) {
-                        handleSelect(stone._id);
-                      }
-                    }}
+                <div>
+                  <p
+                    className="ispublic-set"
                     onClick={(e) => {
-                      if (!deleteState) {
-                        e.stopPropagation();
-                      }
-                    }} // 避免點 checkbox 也觸發整個卡片的 onClick
+                      togglePublic(stone._id, stone.isPublic);
+                    }}
+                  >
+                    {stone.isPublic ? "隱藏" : "取消隱藏"}
+                  </p>
+                  <div
+                    key={stone._id}
+                    className={`stone-item ${
+                      stone.isPublic ? "" : "not-public"
+                    }`}
+                    onClick={() => handleSelect(stone._id)}
                     disabled={deleteState}
-                  />
-                  <img src={stone.imagePath} alt={stone.color} />
-                  <p>{stone.fileName}</p>
+                  >
+                    <input
+                      type="checkbox"
+                      checked={selectedIds.includes(stone._id)}
+                      onChange={() => {
+                        if (!deleteState) {
+                          handleSelect(stone._id);
+                        }
+                      }}
+                      onClick={(e) => {
+                        if (!deleteState) {
+                          e.stopPropagation();
+                        }
+                      }} // 避免點 checkbox 也觸發整個卡片的 onClick
+                      disabled={deleteState}
+                    />
+
+                    <img src={stone.imagePath} alt={stone.color} />
+                    <p>{stone.fileName}</p>
+                  </div>
                 </div>
               ))}
             </div>

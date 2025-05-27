@@ -56,8 +56,11 @@ const FolderComponent = () => {
     const zip = new JSZip();
     const imgFolder = zip.folder("stones");
 
-    for (let i = 0; i < stones.length; i++) {
-      const stone = stones[i];
+    // 只下載 isPublic === true 的圖片
+    const publicStones = stones.filter((stone) => stone.isPublic);
+
+    for (let i = 0; i < publicStones.length; i++) {
+      const stone = publicStones[i];
       try {
         const response = await fetch(stone.imagePath, { mode: "cors" });
 
@@ -101,21 +104,23 @@ const FolderComponent = () => {
         <div className="folder-content-items">
           <div className="folder-stone-container">
             {stones.length > 0 ? (
-              stones.map((stone, index) => (
-                <div
-                  key={stone._id}
-                  className="stone-background"
-                  onClick={() => openModal(index)}
-                >
-                  <img
-                    className="stone-img"
-                    src={stone.imagePath}
-                    alt={stone.color}
-                    width="100"
-                  />
-                  <p className="stone-fileName">{stone.fileName}</p>
-                </div>
-              ))
+              stones
+                .filter((stone) => stone.isPublic) // 過濾掉不公開的
+                .map((stone, index) => (
+                  <div
+                    key={stone._id}
+                    className="stone-background"
+                    onClick={() => openModal(index)}
+                  >
+                    <img
+                      className="stone-img"
+                      src={stone.imagePath}
+                      alt={stone.color}
+                      width="100"
+                    />
+                    <p className="stone-fileName">{stone.fileName}</p>
+                  </div>
+                ))
             ) : (
               <p>沒有找到 {color} 色的大理石。</p>
             )}

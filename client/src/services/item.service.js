@@ -75,12 +75,9 @@ class ItemService {
   }
 
   //編輯個別商品
-  editItem(color, height, width, imagePath, id) {
+  editItem(id, data) {
     return axios.put(API_URL + "/edit/" + id, {
-      color,
-      height,
-      width,
-      imagePath,
+      data,
     });
   }
 

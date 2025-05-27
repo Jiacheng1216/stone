@@ -66,45 +66,51 @@ const HomeComponent = () => {
         </div>
 
         <div className="folder-list">
-          {filteredGrouped.map(([color, stones]) => {
-            const paperCount = stones.filter((stone) => stone.isPaper).length; //檢尺單的數量
-            const stoneCount = stones.length - paperCount; //石頭總數
-            const firstLastNumbers = stones.filter(
-              (stone) =>
-                stone.firstLastNumbers === "頭號" ||
-                stone.firstLastNumbers === "尾號"
-            );
-            // 最新的圖片（放在預覽用）
-            const latestStone = stones
-              .filter((stone) => !stone.isPaper) // 過濾掉 isPaper 為 true 的
-              .sort((a, b) => new Date(a.date) - new Date(b.date))[0]; // 找最新的
+          {filteredGrouped
+            .filter(([color, stones]) => stones.some((stone) => stone.isPublic)) // 只留下有公開圖片的色彩群組
+            .map(([color, stones]) => {
+              const noPublicCount = stones.filter(
+                (stone) => !stone.isPublic
+              ).length; //未公開圖片的數量
+              const paperCount = stones.filter((stone) => stone.isPaper).length; //檢尺單的數量
+              const stoneCount = stones.length - paperCount - noPublicCount; //石頭總數
+              const firstLastNumbers = stones.filter(
+                (stone) =>
+                  stone.firstLastNumbers === "頭號" ||
+                  stone.firstLastNumbers === "尾號"
+              );
+              // 最新的圖片（放在預覽用）
+              const latestStone = stones
+                .filter((stone) => stone.isPublic) // 過濾掉 isPublic 為 false 的
+                .filter((stone) => !stone.isPaper) // 過濾掉 isPaper 為 true 的
+                .sort((a, b) => new Date(a.date) - new Date(b.date))[0]; // 找最新的
 
-            return (
-              <Link
-                to={`/folder/${encodeURIComponent(color)}`}
-                key={color}
-                className="folder-card"
-              >
-                <div className="folder-image-container">
-                  <img
-                    src={latestStone?.imagePath}
-                    alt={`${color}`}
-                    className="preview-img"
-                  />
-                </div>
-                <div className="folder-info">
-                  <p className="folder-color">{color}</p>
-
-                  <div className="folder-row">
-                    <p className="folder-count">現貨片數: {stoneCount}</p>
-                    <p className="folder-firstLastNumbers">
-                      {firstLastNumbers[0]?.firstLastNumbers || ""}
-                    </p>
+              return (
+                <Link
+                  to={`/folder/${encodeURIComponent(color)}`}
+                  key={color}
+                  className="folder-card"
+                >
+                  <div className="folder-image-container">
+                    <img
+                      src={latestStone?.imagePath}
+                      alt={`${color}`}
+                      className="preview-img"
+                    />
                   </div>
-                </div>
-              </Link>
-            );
-          })}
+                  <div className="folder-info">
+                    <p className="folder-color">{color}</p>
+
+                    <div className="folder-row">
+                      <p className="folder-count">現貨片數: {stoneCount}</p>
+                      <p className="folder-firstLastNumbers">
+                        {firstLastNumbers[0]?.firstLastNumbers || ""}
+                      </p>
+                    </div>
+                  </div>
+                </Link>
+              );
+            })}
         </div>
       </div>
       <FooterComponent />
