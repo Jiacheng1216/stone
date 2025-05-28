@@ -215,6 +215,7 @@ p[disabled] {
   display: flex;
   flex-wrap: wrap;
   gap: 26px;
+  margin-top: 12px;
 }
 
 /* 隱藏按鈕 */
